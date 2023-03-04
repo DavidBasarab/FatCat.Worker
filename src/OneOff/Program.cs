@@ -11,11 +11,9 @@ public static class Program
 	{
 		var consoleUtilities = new ConsoleUtilities(new ManualWaitEvent());
 
-		ConsoleLog.WriteMagenta("This is working");
-
-		var timerWrapper = new TimerWrapper();
-
-		timerWrapper.Start(() => ConsoleLog.WriteMagenta("This is working"), 1.Seconds());
+		var workerRunner = WorkerRunner.Create();
+		
+		workerRunner.Start();
 
 		consoleUtilities.WaitForExit();
 	}
