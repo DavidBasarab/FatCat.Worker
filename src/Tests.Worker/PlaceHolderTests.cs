@@ -13,4 +13,10 @@ public class PlaceHolderTests
 		value.Should()
 			.BeTrue();
 	}
+	
+	[Fact]
+	public void SecondPlaceHolder()
+	{
+		JustAPlaceHolder();
+	}
 }
