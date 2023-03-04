@@ -22,7 +22,7 @@ public class WorkerRunner : IWorkerRunner
 
 	public void Start()
 	{
-		var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+		var currentAssemblies = reflectionTools.GetDomainAssemblies();
 
 		foreach (var assembly in currentAssemblies) ConsoleLog.WriteCyan($"{assembly.FullName}");
 	}
