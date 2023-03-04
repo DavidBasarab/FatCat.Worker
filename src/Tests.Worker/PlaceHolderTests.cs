@@ -19,9 +19,5 @@ public class PlaceHolderTests
 	public void SecondPlaceHolder()
 	{
 		JustAPlaceHolder();
-		
-		var timerWrapper = new TimerWrapper();
-		
-		timerWrapper.Testing();
 	}
 }
