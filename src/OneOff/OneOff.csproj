@@ -9,4 +9,8 @@
       <NoWarn>CS8002,CS1700</NoWarn>
   </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Worker\Worker.csproj" />
+    </ItemGroup>
+
 </Project>

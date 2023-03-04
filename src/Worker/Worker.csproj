@@ -18,4 +18,8 @@
       <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FatCat.Toolkit" Version="1.0.114" />
+  </ItemGroup>
+
 </Project>
