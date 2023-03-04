@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using FatCat.Worker;
+using FluentAssertions;
 using Xunit;
 
 namespace Tests.FatCat.Worker;
@@ -18,5 +19,9 @@ public class PlaceHolderTests
 	public void SecondPlaceHolder()
 	{
 		JustAPlaceHolder();
+		
+		var timerWrapper = new TimerWrapper();
+		
+		timerWrapper.Testing();
 	}
 }
