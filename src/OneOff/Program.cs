@@ -26,6 +26,10 @@ public static class Program
 
 		workerRunner.Stop();
 
+		ConsoleLog.Write("After stop");
+
 		await Task.Delay(10.Seconds());
+
+		ConsoleLog.WriteDarkBlue("Exiting . . . . .");
 	}
 }
