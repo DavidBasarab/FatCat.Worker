@@ -12,7 +12,7 @@ public class StartTests : WorkerRunnerTests
 	{
 		workerRunner.Start();
 
-		A.CallTo(() => timeWrapperFactory.CreateTimerWrapper())
+		A.CallTo(() => timeWorkerItemFactory.CreateTimerWorkerItem())
 		.MustHaveHappened(workerTypes.Count, Times.Exactly);
 	}
 
@@ -71,7 +71,7 @@ public class StartTests : WorkerRunnerTests
 	{
 		workerRunner.Start();
 
-		A.CallTo(() => timerWrapper.Start(worker))
+		A.CallTo(() => timerWorkerItem.Start(worker))
 		.MustHaveHappened(workerTypes.Count, Times.Exactly);
 	}
 }
