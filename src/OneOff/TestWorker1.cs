@@ -34,6 +34,8 @@ public class Worker3 : IWorker
 
 	public TimeSpan Interval => 1.Seconds();
 
+	public bool WaitOnWorkBeforeDelay() => false;
+
 	public async Task DoWork()
 	{
 		ConsoleLog.WriteWhite($"Worker 3 going to wait for {delayTime} seconds");
