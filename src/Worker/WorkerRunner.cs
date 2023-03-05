@@ -9,6 +9,8 @@ public interface IWorkerRunner : IDisposable
 {
 	void AddDynamicWorker<T>() where T : IDynamicWorker;
 
+	void AddDynamicWorker(IDynamicWorker instance);
+
 	void Start();
 
 	void Stop();
@@ -38,6 +40,8 @@ public class WorkerRunner : IWorkerRunner
 	}
 
 	public void AddDynamicWorker<T>() where T : IDynamicWorker => StartWorker(typeof(T));
+
+	public void AddDynamicWorker(IDynamicWorker instance) => StartTimeForWorkerInstance(instance);
 
 	public void Dispose()
 	{
@@ -72,17 +76,22 @@ public class WorkerRunner : IWorkerRunner
 		foreach (var timer in Timers) timer.Dispose();
 	}
 
+	private void StartTimeForWorkerInstance(IWorkerItem worker)
+	{
+		var timer = TimerWrapperFactory.CreateTimerWrapper();
+
+		timer.Start(worker.DoWork, worker.Interval, worker.WaitOnWorkBeforeDelay());
+
+		Timers.Add(timer);
+	}
+
 	private void StartWorker(Type workerType)
 	{
 		ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
 
 		var worker = systemScope.Resolve(workerType) as IWorkerItem;
 
-		var timer = TimerWrapperFactory.CreateTimerWrapper();
-
-		timer.Start(worker.DoWork, worker.Interval, worker.WaitOnWorkBeforeDelay());
-
-		Timers.Add(timer);
+		StartTimeForWorkerInstance(worker);
 	}
 
 	private void StopAllTimers()
