@@ -71,7 +71,7 @@ public class StartTests : WorkerRunnerTests
 	{
 		workerRunner.Start();
 
-		A.CallTo(() => timerWrapper.Start(worker.DoWork, interval, true))
+		A.CallTo(() => timerWrapper.Start(worker))
 		.MustHaveHappened(workerTypes.Count, Times.Exactly);
 	}
 }

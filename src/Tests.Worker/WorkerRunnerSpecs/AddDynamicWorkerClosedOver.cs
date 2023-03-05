@@ -46,7 +46,7 @@ public class AddDynamicWorkerClosedOver : WorkerRunnerTests
 	{
 		workerRunner.AddDynamicWorker<TestDynWorker>();
 
-		A.CallTo(() => timerWrapper.Start(instanceWorker.DoWork, interval, true))
+		A.CallTo(() => timerWrapper.Start(instanceWorker))
 		.MustHaveHappened();
 	}
 

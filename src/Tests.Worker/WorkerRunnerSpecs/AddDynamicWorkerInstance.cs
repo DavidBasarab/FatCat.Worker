@@ -36,7 +36,7 @@ public class AddDynamicWorkerInstance : WorkerRunnerTests
 	{
 		workerRunner.AddDynamicWorker(workerInstance);
 
-		A.CallTo(() => timerWrapper.Start(workerInstance.DoWork, workerInstance.Interval, workerInstance.WaitOnWorkBeforeDelay()))
+		A.CallTo(() => timerWrapper.Start(workerInstance))
 		.MustHaveHappened();
 	}
 

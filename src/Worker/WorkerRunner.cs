@@ -80,7 +80,7 @@ public class WorkerRunner : IWorkerRunner
 	{
 		var timer = TimerWrapperFactory.CreateTimerWrapper();
 
-		timer.Start(worker.DoWork, worker.Interval, worker.WaitOnWorkBeforeDelay());
+		timer.Start(worker);
 
 		Timers.Add(timer);
 	}
