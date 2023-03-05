@@ -17,6 +17,7 @@ public abstract class WorkerRunnerTests
 	protected ITimerWrapperFactory timeWrapperFactory;
 	protected IWorker worker;
 	protected List<Type> workerTypes;
+	protected List<ITimerWrapper> timers;
 
 	protected WorkerRunnerTests()
 	{
@@ -81,5 +82,19 @@ public abstract class WorkerRunnerTests
 
 		A.CallTo(() => worker.WaitOnWorkBeforeDelay())
 		.Returns(true);
+	}
+
+	protected void SetUpFakeTimers()
+	{
+		timers = new List<ITimerWrapper>();
+
+		for (var i = 0; i < 3; i++)
+		{
+			var timer = A.Fake<ITimerWrapper>();
+
+			timers.Add(timer);
+
+			workerRunner.Timers.Add(timer);
+		}
 	}
 }

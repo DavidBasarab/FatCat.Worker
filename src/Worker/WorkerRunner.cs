@@ -37,11 +37,10 @@ public class WorkerRunner : IWorkerRunner
 
 	public void Dispose()
 	{
-		// Stop();
-		//
-		// foreach (var timer in Timers) timer.Dispose();
-		//
-		// Timers.Clear();
+		StopAllTimers();
+		DisposeAllTimers();
+
+		Timers.Clear();
 	}
 
 	public void Start()
@@ -57,11 +56,11 @@ public class WorkerRunner : IWorkerRunner
 		started = true;
 	}
 
-	public void Stop()
-	{
-		foreach (var timer in Timers) timer.Stop();
+	public void Stop() => Dispose();
 
-		Timers.Clear();
+	private void DisposeAllTimers()
+	{
+		foreach (var timer in Timers) timer.Dispose();
 	}
 
 	private void StartWorker(Type workerType)
@@ -75,5 +74,10 @@ public class WorkerRunner : IWorkerRunner
 		timer.Start(worker.DoWork, worker.Interval, worker.WaitOnWorkBeforeDelay());
 
 		Timers.Add(timer);
+	}
+
+	private void StopAllTimers()
+	{
+		foreach (var timer in Timers) timer.Stop();
 	}
 }

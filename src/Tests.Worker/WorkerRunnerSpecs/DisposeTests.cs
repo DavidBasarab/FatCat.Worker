@@ -4,25 +4,25 @@ using Xunit;
 
 namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
 
-public class StopTests : WorkerRunnerTests
+public class DisposeTests : WorkerRunnerTests
 {
-	public StopTests() => SetUpFakeTimers();
+	public DisposeTests() => SetUpFakeTimers();
 
 	[Fact]
-	public void AfterStopWillClearTimers()
+	public void ClearTimersAfterDispose()
 	{
-		workerRunner.Stop();
+		workerRunner.Dispose();
 
 		workerRunner.Timers
 					.Should()
 					.BeEmpty();
 	}
-	
+
 	[Fact]
-	public void DisposeAllTimers()
+	public void WillDisposeOfAllTheTimers()
 	{
-		workerRunner.Stop();
-		
+		workerRunner.Dispose();
+
 		foreach (var timer in timers)
 		{
 			A.CallTo(() => timer.Dispose())
@@ -31,9 +31,9 @@ public class StopTests : WorkerRunnerTests
 	}
 
 	[Fact]
-	public void WillStopEachTimer()
+	public void WillStopAllTimers()
 	{
-		workerRunner.Stop();
+		workerRunner.Dispose();
 
 		foreach (var timer in timers)
 		{
