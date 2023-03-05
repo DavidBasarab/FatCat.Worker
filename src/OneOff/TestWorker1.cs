@@ -1,4 +1,5 @@
-﻿using FatCat.Toolkit.Console;
+﻿using FatCat.Fakes;
+using FatCat.Toolkit.Console;
 using FatCat.Worker;
 using Humanizer;
 
@@ -30,7 +31,7 @@ public class TestWorker2 : IWorker
 
 public class Worker3 : IWorker
 {
-	private readonly TimeSpan delayTime = 5.Seconds();
+	private readonly TimeSpan delayTime = Faker.RandomInt(1, 4).Seconds();
 
 	public TimeSpan Interval => 1.Seconds();
 

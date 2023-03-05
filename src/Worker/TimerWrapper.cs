@@ -30,7 +30,7 @@ internal class TimerWrapper : ITimerWrapper
 
 		if (timer != null) return;
 
-		timer = new Timer(interval) { AutoReset = waitOnWorkBeforeDelay };
+		timer = new Timer(interval) { AutoReset = !waitOnWorkBeforeDelay };
 
 		timer.Elapsed += TimerElapsed;
 
