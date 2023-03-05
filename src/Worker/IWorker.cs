@@ -1,6 +1,6 @@
 ﻿namespace FatCat.Worker;
 
-public interface IWorker
+public interface IWorkerItem
 {
 	TimeSpan Interval { get; }
 
@@ -8,3 +8,7 @@ public interface IWorker
 
 	bool WaitOnWorkBeforeDelay() => true;
 }
+
+public interface IWorker : IWorkerItem { }
+
+public interface IDynamicWorker : IWorkerItem { }
