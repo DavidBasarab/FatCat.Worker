@@ -16,15 +16,17 @@ public class WorkerRunner : IWorkerRunner
 {
 	private readonly IReflectionTools reflectionTools;
 	private readonly ISystemScope systemScope;
+
+	private bool started;
 	private ITimerWrapperFactory timerWrapperFactory;
+
+	internal ConcurrentBag<ITimerWrapper> Timers { get; } = new();
 
 	internal ITimerWrapperFactory TimerWrapperFactory
 	{
 		get => timerWrapperFactory ??= systemScope.Resolve<ITimerWrapperFactory>();
 		set => timerWrapperFactory = value;
 	}
-
-	private ConcurrentBag<ITimerWrapper> Timers { get; } = new();
 
 	public WorkerRunner(IReflectionTools reflectionTools,
 						ISystemScope systemScope)
@@ -44,26 +46,32 @@ public class WorkerRunner : IWorkerRunner
 
 	public void Start()
 	{
+		if (started) return;
+
 		var currentAssemblies = reflectionTools.GetDomainAssemblies();
-		
+
 		var foundWorkerTypes = reflectionTools.FindTypesImplementing<IWorker>(currentAssemblies);
-		
-		foreach (var workerType in foundWorkerTypes)
-		{
-			ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
-		
-			var worker = systemScope.Resolve(workerType) as IWorker;
-		
-			// var timer = TimerWrapperFactory.CreateTimerWrapper();
-			//
-			// timer.Start(worker.DoWork, worker.Interval, worker.WaitOnWorkBeforeDelay());
-			//
-			// Timers.Add(timer);
-		}
+
+		foreach (var workerType in foundWorkerTypes) StartWorker(workerType);
+
+		started = true;
 	}
 
 	public void Stop()
 	{
 		// foreach (var timer in Timers) timer.Stop();
+	}
+
+	private void StartWorker(Type workerType)
+	{
+		ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
+
+		var worker = systemScope.Resolve(workerType) as IWorker;
+
+		var timer = TimerWrapperFactory.CreateTimerWrapper();
+
+		timer.Start(worker.DoWork, worker.Interval, worker.WaitOnWorkBeforeDelay());
+
+		Timers.Add(timer);
 	}
 }
