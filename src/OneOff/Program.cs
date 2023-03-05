@@ -2,12 +2,13 @@
 using FatCat.Toolkit.Console;
 using FatCat.Toolkit.Injection;
 using FatCat.Worker;
+using Humanizer;
 
 namespace OneOff;
 
 public static class Program
 {
-	public static void Main(params string[] args)
+	public static async Task Main(params string[] args)
 	{
 		SystemScope.Initialize(new ContainerBuilder(), ScopeOptions.SetLifetimeScope);
 
@@ -16,9 +17,15 @@ public static class Program
 		var workerRunner = SystemScope.Container.Resolve<IWorkerRunner>();
 
 		workerRunner.Start();
-		
+
 		ConsoleLog.WriteYellow("After worker runner start");
 
-		consoleUtilities.WaitForExit();
+		await Task.Delay(15.Seconds());
+
+		ConsoleLog.WriteYellow("After delay");
+
+		workerRunner.Stop();
+
+		await Task.Delay(10.Seconds());
 	}
 }

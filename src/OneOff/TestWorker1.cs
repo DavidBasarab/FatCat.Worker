@@ -27,3 +27,19 @@ public class TestWorker2 : IWorker
 		return Task.CompletedTask;
 	}
 }
+
+public class Worker3 : IWorker
+{
+	private readonly TimeSpan delayTime = 5.Seconds();
+
+	public TimeSpan Interval => 1.Seconds();
+
+	public async Task DoWork()
+	{
+		ConsoleLog.WriteWhite($"Worker 3 going to wait for {delayTime} seconds");
+
+		await Task.Delay(delayTime);
+
+		ConsoleLog.WriteWhite($"Worker 3 has waited for {delayTime} seconds. Done");
+	}
+}

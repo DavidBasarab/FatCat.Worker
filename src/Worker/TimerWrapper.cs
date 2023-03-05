@@ -30,10 +30,7 @@ internal class TimerWrapper : ITimerWrapper
 
 		if (timer != null) return;
 
-		timer = new Timer(interval)
-				{
-					AutoReset = true,
-				};
+		timer = new Timer(interval) { AutoReset = false };
 
 		timer.Elapsed += TimerElapsed;
 
@@ -42,5 +39,10 @@ internal class TimerWrapper : ITimerWrapper
 
 	public void Stop() => timer?.Stop();
 
-	private void TimerElapsed(object sender, ElapsedEventArgs e) => timerCallback().Wait();
+	private void TimerElapsed(object sender, ElapsedEventArgs e)
+	{
+		timerCallback().Wait();
+
+		timer.Start();
+	}
 }
