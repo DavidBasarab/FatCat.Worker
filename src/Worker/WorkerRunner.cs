@@ -43,9 +43,9 @@ public class WorkerRunner : IWorkerRunner
 
 	public void Start()
 	{
-		// var currentAssemblies = reflectionTools.GetDomainAssemblies();
-		//
-		// var foundWorkerTypes = reflectionTools.FindTypesImplementing<IWorker>(currentAssemblies);
+		var currentAssemblies = reflectionTools.GetDomainAssemblies();
+		
+		var foundWorkerTypes = reflectionTools.FindTypesImplementing<IWorker>(currentAssemblies);
 		//
 		// foreach (var workerType in foundWorkerTypes)
 		// {

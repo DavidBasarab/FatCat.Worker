@@ -3,18 +3,19 @@ using FakeItEasy;
 using FatCat.Toolkit;
 using FatCat.Toolkit.Injection;
 using FatCat.Worker;
+using Xunit;
 
 namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
 
 public class StartTests
 {
-	private List<Assembly> assmblies;
+	private List<Assembly> assemblies;
 	private IReflectionTools reflectionTools;
 	private ISystemScope systemScope;
 	private ITimerWrapper timerWrapper;
 	private ITimerWrapperFactory timeWrapperFactory;
 	private IWorker worker;
-	private WorkerRunner workerRunner;
+	private readonly WorkerRunner workerRunner;
 	private List<Type> workerTypes;
 
 	public StartTests()
@@ -26,18 +27,36 @@ public class StartTests
 		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWrapperFactory = timeWrapperFactory };
 	}
 
+	[Fact]
+	public void FindTypesImplementingIWorker()
+	{
+		workerRunner.Start();
+
+		A.CallTo(() => reflectionTools.FindTypesImplementing<IWorker>(assemblies))
+		.MustHaveHappened();
+	}
+
+	[Fact]
+	public void GetDomainAssemblies()
+	{
+		workerRunner.Start();
+
+		A.CallTo(() => reflectionTools.GetDomainAssemblies())
+		.MustHaveHappened();
+	}
+
 	private void SetUpReflectionTools()
 	{
 		reflectionTools = A.Fake<IReflectionTools>();
 
-		assmblies = new List<Assembly>
+		assemblies = new List<Assembly>
 					{
 						typeof(StartTests).Assembly,
 						typeof(WorkerRunner).Assembly
 					};
 
 		A.CallTo(() => reflectionTools.GetDomainAssemblies())
-		.Returns(assmblies);
+		.Returns(assemblies);
 
 		workerTypes = new List<Type>
 					{

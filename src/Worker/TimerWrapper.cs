@@ -4,7 +4,7 @@ using Timer = System.Timers.Timer;
 
 namespace FatCat.Worker;
 
-internal interface ITimerWrapper : IDisposable
+public interface ITimerWrapper : IDisposable
 {
 	void Start(Func<Task> timerCallback, TimeSpan interval, bool waitOnWorkBeforeDelay);
 
