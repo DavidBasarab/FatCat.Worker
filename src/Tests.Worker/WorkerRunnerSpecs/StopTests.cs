@@ -1,5 +1,6 @@
 using FakeItEasy;
 using FatCat.Worker;
+using FluentAssertions;
 using Xunit;
 
 namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
@@ -20,6 +21,16 @@ public class StopTests : WorkerRunnerTests
 
 			workerRunner.Timers.Add(timer);
 		}
+	}
+
+	[Fact]
+	public void AfterStopWillClearTimers()
+	{
+		workerRunner.Stop();
+
+		workerRunner.Timers
+					.Should()
+					.BeEmpty();
 	}
 
 	[Fact]

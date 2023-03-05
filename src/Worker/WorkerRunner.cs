@@ -60,6 +60,8 @@ public class WorkerRunner : IWorkerRunner
 	public void Stop()
 	{
 		foreach (var timer in Timers) timer.Stop();
+
+		Timers.Clear();
 	}
 
 	private void StartWorker(Type workerType)
