@@ -1,5 +1,6 @@
-﻿using FatCat.Toolkit.Console;
-using FatCat.Toolkit.Events;
+﻿using Autofac;
+using FatCat.Toolkit.Console;
+using FatCat.Toolkit.Injection;
 using FatCat.Worker;
 using Humanizer;
 
@@ -7,16 +8,28 @@ namespace OneOff;
 
 public static class Program
 {
-	public static void Main(params string[] args)
+	public static async Task Main(params string[] args)
 	{
-		var consoleUtilities = new ConsoleUtilities(new ManualWaitEvent());
+		SystemScope.Initialize(new ContainerBuilder(), ScopeOptions.SetLifetimeScope);
 
-		ConsoleLog.WriteMagenta("This is working");
+		var consoleUtilities = SystemScope.Container.Resolve<IConsoleUtilities>();
 
-		var timerWrapper = new TimerWrapper();
+		var workerRunner = SystemScope.Container.Resolve<IWorkerRunner>();
 
-		timerWrapper.Start(() => ConsoleLog.WriteMagenta("This is working"), 1.Seconds());
+		workerRunner.Start();
 
-		consoleUtilities.WaitForExit();
+		ConsoleLog.WriteYellow("After worker runner start");
+
+		await Task.Delay(15.Seconds());
+
+		ConsoleLog.WriteYellow("After delay");
+
+		workerRunner.Stop();
+
+		ConsoleLog.Write("After stop");
+
+		await Task.Delay(10.Seconds());
+
+		ConsoleLog.WriteDarkBlue("Exiting . . . . .");
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace FatCat.Worker;
 
-internal interface ITimerWrapperFactory
+public interface ITimerWrapperFactory
 {
 	ITimerWrapper CreateTimerWrapper();
 }

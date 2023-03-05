@@ -4,9 +4,9 @@ using Timer = System.Timers.Timer;
 
 namespace FatCat.Worker;
 
-internal interface ITimerWrapper : IDisposable
+public interface ITimerWrapper : IDisposable
 {
-	void Start(Action timerCallback, TimeSpan interval);
+	void Start(Func<Task> timerCallback, TimeSpan interval, bool waitOnWorkBeforeDelay);
 
 	void Stop();
 }
@@ -15,7 +15,7 @@ internal interface ITimerWrapper : IDisposable
 internal class TimerWrapper : ITimerWrapper
 {
 	private Timer timer;
-	private Action timerCallback;
+	private Func<Task> timerCallback;
 
 	public void Dispose()
 	{
@@ -24,16 +24,13 @@ internal class TimerWrapper : ITimerWrapper
 		timer?.Dispose();
 	}
 
-	public void Start(Action timerCallback, TimeSpan interval)
+	public void Start(Func<Task> timerCallback, TimeSpan interval, bool waitOnWorkBeforeDelay)
 	{
 		this.timerCallback = timerCallback;
 
 		if (timer != null) return;
 
-		timer = new Timer(interval)
-				{
-					AutoReset = true,
-				};
+		timer = new Timer(interval) { AutoReset = !waitOnWorkBeforeDelay };
 
 		timer.Elapsed += TimerElapsed;
 
@@ -42,5 +39,10 @@ internal class TimerWrapper : ITimerWrapper
 
 	public void Stop() => timer?.Stop();
 
-	private void TimerElapsed(object sender, ElapsedEventArgs e) => timerCallback();
+	private void TimerElapsed(object sender, ElapsedEventArgs e)
+	{
+		timerCallback().Wait();
+
+		if (!timer.AutoReset) timer.Start();
+	}
 }
