@@ -7,6 +7,8 @@ namespace FatCat.Worker;
 
 public interface IWorkerRunner : IDisposable
 {
+	void AddDynamicWorker(IDynamicWorker worker);
+
 	void Start();
 
 	void Stop();
@@ -34,6 +36,8 @@ public class WorkerRunner : IWorkerRunner
 		this.reflectionTools = reflectionTools;
 		this.systemScope = systemScope;
 	}
+
+	public void AddDynamicWorker(IDynamicWorker worker) { throw new NotImplementedException(); }
 
 	public void Dispose()
 	{
@@ -65,6 +69,8 @@ public class WorkerRunner : IWorkerRunner
 
 	private void StartWorker(Type workerType)
 	{
+		if (workerType == typeof(IDynamicWorker)) return;
+
 		ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
 
 		var worker = systemScope.Resolve(workerType) as IWorker;
