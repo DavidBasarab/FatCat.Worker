@@ -18,7 +18,7 @@ public class WorkerRunner : IWorkerRunner
 	private readonly ISystemScope systemScope;
 	private readonly ITimerWrapperFactory wrapperFactory;
 
-	private ConcurrentBag<ITimerWrapper> Timers { get; set; } = new();
+	private ConcurrentBag<ITimerWrapper> Timers { get; } = new();
 
 	private ITimerWrapperFactory TimerWrapperFactory => systemScope.Resolve<ITimerWrapperFactory>();
 
@@ -41,8 +41,6 @@ public class WorkerRunner : IWorkerRunner
 	public void Start()
 	{
 		var currentAssemblies = reflectionTools.GetDomainAssemblies();
-
-		foreach (var assembly in currentAssemblies) ConsoleLog.WriteCyan($"{assembly.FullName}");
 
 		var foundWorkerTypes = reflectionTools.FindTypesImplementing<IWorker>(currentAssemblies);
 

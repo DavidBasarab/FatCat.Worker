@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FatCat.Toolkit" Version="1.0.115" />
+    <PackageReference Include="FatCat.Toolkit" Version="1.0.116" />
   </ItemGroup>
 
 </Project>

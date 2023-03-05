@@ -16,6 +16,8 @@ public static class Program
 		var workerRunner = SystemScope.Container.Resolve<IWorkerRunner>();
 
 		workerRunner.Start();
+		
+		ConsoleLog.WriteYellow("After worker runner start");
 
 		consoleUtilities.WaitForExit();
 	}
