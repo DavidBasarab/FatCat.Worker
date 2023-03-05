@@ -11,7 +11,4 @@ public interface IWorkerItem
 
 public interface IWorker : IWorkerItem { }
 
-public interface IDynamicWorker : IWorkerItem
-{
-	bool OneTimeRun { get; }
-}
+public interface IDynamicWorker : IWorkerItem { }

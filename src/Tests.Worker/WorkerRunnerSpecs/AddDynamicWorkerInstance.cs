@@ -44,8 +44,6 @@ public class AddDynamicWorkerInstance : WorkerRunnerTests
 	{
 		public TimeSpan Interval => 4.Seconds();
 
-		public bool OneTimeRun => false;
-
 		public Task DoWork() => throw new NotImplementedException();
 
 		public bool WaitOnWorkBeforeDelay() => true;
