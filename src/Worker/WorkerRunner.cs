@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using FatCat.Toolkit;
+using FatCat.Toolkit.Console;
 using FatCat.Toolkit.Injection;
 
 namespace FatCat.Worker;
@@ -46,19 +47,19 @@ public class WorkerRunner : IWorkerRunner
 		var currentAssemblies = reflectionTools.GetDomainAssemblies();
 		
 		var foundWorkerTypes = reflectionTools.FindTypesImplementing<IWorker>(currentAssemblies);
-		//
-		// foreach (var workerType in foundWorkerTypes)
-		// {
-		// 	ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
-		//
-		// 	var worker = systemScope.Resolve(workerType) as IWorker;
-		//
-		// 	var timer = TimerWrapperFactory.CreateTimerWrapper();
-		//
-		// 	timer.Start(worker.DoWork, worker.Interval, worker.WaitOnWorkBeforeDelay());
-		//
-		// 	Timers.Add(timer);
-		// }
+		
+		foreach (var workerType in foundWorkerTypes)
+		{
+			ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
+		
+			var worker = systemScope.Resolve(workerType) as IWorker;
+		
+			// var timer = TimerWrapperFactory.CreateTimerWrapper();
+			//
+			// timer.Start(worker.DoWork, worker.Interval, worker.WaitOnWorkBeforeDelay());
+			//
+			// Timers.Add(timer);
+		}
 	}
 
 	public void Stop()

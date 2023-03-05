@@ -9,13 +9,13 @@ namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
 
 public class StartTests
 {
+	private readonly WorkerRunner workerRunner;
 	private List<Assembly> assemblies;
 	private IReflectionTools reflectionTools;
 	private ISystemScope systemScope;
 	private ITimerWrapper timerWrapper;
 	private ITimerWrapperFactory timeWrapperFactory;
 	private IWorker worker;
-	private readonly WorkerRunner workerRunner;
 	private List<Type> workerTypes;
 
 	public StartTests()
@@ -25,6 +25,18 @@ public class StartTests
 		SetUpSystemScope();
 
 		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWrapperFactory = timeWrapperFactory };
+	}
+
+	[Fact]
+	public void CreateAWorkerForeachFoundType()
+	{
+		workerRunner.Start();
+
+		foreach (var workerType in workerTypes)
+		{
+			A.CallTo(() => systemScope.Resolve(workerType))
+			.MustHaveHappened();
+		}
 	}
 
 	[Fact]
