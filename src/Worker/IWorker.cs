@@ -8,3 +8,5 @@ public interface IWorker
 
 	bool WaitOnWorkBeforeDelay() => true;
 }
+
+public interface IDynamicWorker : IWorker { }
