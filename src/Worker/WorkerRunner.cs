@@ -1,5 +1,7 @@
-﻿using FatCat.Toolkit;
+﻿using System.Collections.Concurrent;
+using FatCat.Toolkit;
 using FatCat.Toolkit.Console;
+using FatCat.Toolkit.Injection;
 
 namespace FatCat.Worker;
 
@@ -12,13 +14,29 @@ public interface IWorkerRunner : IDisposable
 
 public class WorkerRunner : IWorkerRunner
 {
-	public static WorkerRunner Create() => new(new ReflectionTools());
-
 	private readonly IReflectionTools reflectionTools;
+	private readonly ISystemScope systemScope;
+	private readonly ITimerWrapperFactory wrapperFactory;
 
-	public WorkerRunner(IReflectionTools reflectionTools) => this.reflectionTools = reflectionTools;
+	private ConcurrentBag<ITimerWrapper> Timers { get; set; } = new();
 
-	public void Dispose() { }
+	private ITimerWrapperFactory TimerWrapperFactory => systemScope.Resolve<ITimerWrapperFactory>();
+
+	public WorkerRunner(IReflectionTools reflectionTools,
+						ISystemScope systemScope)
+	{
+		this.reflectionTools = reflectionTools;
+		this.systemScope = systemScope;
+	}
+
+	public void Dispose()
+	{
+		Stop();
+
+		foreach (var timer in Timers) timer.Dispose();
+
+		Timers.Clear();
+	}
 
 	public void Start()
 	{
@@ -28,8 +46,22 @@ public class WorkerRunner : IWorkerRunner
 
 		var foundWorkerTypes = reflectionTools.FindTypesImplementing<IWorker>(currentAssemblies);
 
-		foreach (var workerType in foundWorkerTypes) ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
+		foreach (var workerType in foundWorkerTypes)
+		{
+			ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
+
+			var worker = systemScope.Resolve(workerType) as IWorker;
+
+			var timer = TimerWrapperFactory.CreateTimerWrapper();
+
+			timer.Start(worker.DoWork, worker.Interval);
+
+			Timers.Add(timer);
+		}
 	}
 
-	public void Stop() { }
+	public void Stop()
+	{
+		foreach (var timer in Timers) timer.Stop();
+	}
 }

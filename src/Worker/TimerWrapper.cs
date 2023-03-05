@@ -6,7 +6,7 @@ namespace FatCat.Worker;
 
 internal interface ITimerWrapper : IDisposable
 {
-	void Start(Action timerCallback, TimeSpan interval);
+	void Start(Func<Task> timerCallback, TimeSpan interval);
 
 	void Stop();
 }
@@ -15,7 +15,7 @@ internal interface ITimerWrapper : IDisposable
 internal class TimerWrapper : ITimerWrapper
 {
 	private Timer timer;
-	private Action timerCallback;
+	private Func<Task> timerCallback;
 
 	public void Dispose()
 	{
@@ -24,7 +24,7 @@ internal class TimerWrapper : ITimerWrapper
 		timer?.Dispose();
 	}
 
-	public void Start(Action timerCallback, TimeSpan interval)
+	public void Start(Func<Task> timerCallback, TimeSpan interval)
 	{
 		this.timerCallback = timerCallback;
 
@@ -42,5 +42,5 @@ internal class TimerWrapper : ITimerWrapper
 
 	public void Stop() => timer?.Stop();
 
-	private void TimerElapsed(object sender, ElapsedEventArgs e) => timerCallback();
+	private void TimerElapsed(object sender, ElapsedEventArgs e) => timerCallback().Wait();
 }

@@ -1,7 +1,7 @@
-﻿using FatCat.Toolkit.Console;
-using FatCat.Toolkit.Events;
+﻿using Autofac;
+using FatCat.Toolkit.Console;
+using FatCat.Toolkit.Injection;
 using FatCat.Worker;
-using Humanizer;
 
 namespace OneOff;
 
@@ -9,10 +9,12 @@ public static class Program
 {
 	public static void Main(params string[] args)
 	{
-		var consoleUtilities = new ConsoleUtilities(new ManualWaitEvent());
+		SystemScope.Initialize(new ContainerBuilder(), ScopeOptions.SetLifetimeScope);
 
-		var workerRunner = WorkerRunner.Create();
-		
+		var consoleUtilities = SystemScope.Container.Resolve<IConsoleUtilities>();
+
+		var workerRunner = SystemScope.Container.Resolve<IWorkerRunner>();
+
 		workerRunner.Start();
 
 		consoleUtilities.WaitForExit();
