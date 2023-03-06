@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using FatCat.Toolkit.Console;
 using FatCat.Worker.Wrappers;
 
 namespace FatCat.Worker;
@@ -23,26 +24,51 @@ internal class TimerWorkerItem : ITimerWorkerItem
 
 	public void Start(IWorkerItem workerItem)
 	{
-		this.workerItem = workerItem;
-
-		if (timer != null) return;
-
-		timer = timerWrapperFactory.CreateTimerWrapper();
-
-		timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
-		timer.Interval = this.workerItem.Interval;
-
-		timer.OnTimerElapsed += TimerElapsed;
-
-		timer.Start();
+		ConsoleLog.WriteGreen("TEMP");
+		ConsoleLog.WriteGreen("TEMP");
+		
+		// TODO : Unit Test
+		// this.workerItem = workerItem;
+		//
+		// if (timer != null) return;
+		//
+		// timer = timerWrapperFactory.CreateTimerWrapper();
+		//
+		// timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
+		// timer.Interval = this.workerItem.Interval;
+		//
+		// timer.OnTimerElapsed += TimerElapsed;
+		//
+		// var looking = 13;
+		//
+		// if (timer.AutoReset)
+		// {
+		// 	looking = 13;
+		// }
+		//
+		// ConsoleLog.WriteMagenta($"Looking at {looking}");
+		//
+		// timer.Start();
 	}
 
-	public void Stop() => timer?.Dispose();
-
-	private void TimerElapsed()
+	public void Stop()
 	{
-		workerItem.DoWork().Wait();
+		// TODO : Unit Test
+		// timer?.Dispose();
+		
+		ConsoleLog.WriteGreen("TEMP");
+		ConsoleLog.WriteGreen("TEMP");
+	}
 
-		if (!timer.AutoReset) timer.Start();
+	public void TimerElapsed()
+	{
+		// TODO : Unit Test
+		
+		// workerItem.DoWork().Wait();
+		//
+		// if (!timer.AutoReset) timer.Start();
+		
+		ConsoleLog.WriteGreen("TEMP");
+		ConsoleLog.WriteGreen("TEMP");
 	}
 }
