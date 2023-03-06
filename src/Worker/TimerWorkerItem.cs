@@ -29,7 +29,7 @@ internal class TimerWorkerItem : ITimerWorkerItem
 
 		timer = timerWrapperFactory.CreateTimerWrapper();
 
-		timer.AutoReset = !workerItem.WaitOnWorkBeforeDelay();
+		timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
 		timer.Interval = this.workerItem.Interval;
 
 		timer.OnTimerElapsed += TimerElapsed;
