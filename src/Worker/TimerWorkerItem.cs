@@ -27,14 +27,13 @@ internal class TimerWorkerItem : ITimerWorkerItem
 		ConsoleLog.WriteGreen("TEMP");
 		ConsoleLog.WriteGreen("TEMP");
 		
-		// TODO : Unit Test
-		// this.workerItem = workerItem;
+		this.workerItem = workerItem;
 		//
 		// if (timer != null) return;
 		//
-		// timer = timerWrapperFactory.CreateTimerWrapper();
-		//
-		// timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
+		timer = timerWrapperFactory.CreateTimerWrapper();
+		
+		timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
 		// timer.Interval = this.workerItem.Interval;
 		//
 		// timer.OnTimerElapsed += TimerElapsed;

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Timers;
 using Timer = System.Timers.Timer;
 
@@ -14,6 +15,7 @@ public interface ITimerWrapper : IDisposable
 	void Start();
 }
 
+[ExcludeFromCodeCoverage(Justification = "Simple wrapper for the timer")]
 public class TimerWrapper : ITimerWrapper
 {
 	private Timer timer;
