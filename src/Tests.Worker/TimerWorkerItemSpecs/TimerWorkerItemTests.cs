@@ -46,8 +46,5 @@ public abstract class TimerWorkerItemTests
 
 		A.CallTo(() => workerItem.WaitOnWorkBeforeDelay())
 		.ReturnsLazily(() => waitForDelay);
-
-		A.CallTo(() => workerItem.NumberOfTimesToRun())
-		.ReturnsLazily(() => numberOfTimesToRun);
 	}
 }

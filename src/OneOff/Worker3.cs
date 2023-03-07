@@ -23,11 +23,13 @@ public class Worker3 : IWorker
 	public bool WaitOnWorkBeforeDelay() => false;
 }
 
-public class LimitedNumberOfRunWorker : IWorker
+public class LimitedNumberOfRunWorker : IRunLimitedNumberWorker
 {
 	private static int runCount;
 
 	public TimeSpan Interval => 1.Seconds();
+
+	public int NumberOfTimesToRun => 5;
 
 	public Task DoWork()
 	{
@@ -37,6 +39,4 @@ public class LimitedNumberOfRunWorker : IWorker
 
 		return Task.CompletedTask;
 	}
-
-	public int NumberOfTimesToRun() => 5;
 }

@@ -61,7 +61,7 @@ public class WorkerRunner : IWorkerRunner
 
 		foreach (var workerType in foundWorkerTypes)
 		{
-			if (workerType == typeof(IDynamicWorker) || workerType == typeof(IRunAtSpecificTimeWorker)) continue;
+			if (SkipType(workerType)) continue;
 
 			StartWorker(workerType);
 		}
@@ -75,6 +75,8 @@ public class WorkerRunner : IWorkerRunner
 	{
 		foreach (var timer in Timers) timer.Dispose();
 	}
+
+	private static bool SkipType(Type workerType) => workerType == typeof(IDynamicWorker) || workerType == typeof(IRunAtSpecificTimeWorker) || workerType == typeof(IRunLimitedNumberWorker);
 
 	private void StartTimeForWorkerInstance(IWorkerItem worker)
 	{

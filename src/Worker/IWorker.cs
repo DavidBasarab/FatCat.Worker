@@ -6,14 +6,17 @@ public interface IWorkerItem
 
 	Task DoWork();
 
-	int NumberOfTimesToRun() => -1;
-
 	bool WaitOnWorkBeforeDelay() => true;
 }
 
 public interface IWorker : IWorkerItem { }
 
 public interface IDynamicWorker : IWorkerItem { }
+
+public interface IRunLimitedNumberWorker : IWorker
+{
+	int NumberOfTimesToRun { get; }
+}
 
 public interface IRunAtSpecificTimeWorker : IWorker
 {

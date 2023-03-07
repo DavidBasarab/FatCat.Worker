@@ -19,7 +19,15 @@ public class TimerWorkerItem : ITimerWorkerItem
 	private ITimerWrapper timer;
 	private IWorkerItem workerItem;
 
-	private int NumberOfTimesToRun => workerItem.NumberOfTimesToRun();
+	private int NumberOfTimesToRun
+	{
+		get
+		{
+			if (workerItem is IRunLimitedNumberWorker timesWorker) return timesWorker.NumberOfTimesToRun;
+
+			return -1;
+		}
+	}
 
 	private bool RunForever => NumberOfTimesToRun == -1;
 
@@ -37,13 +45,13 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 		timer = timerWrapperFactory.CreateTimerWrapper();
 
-		if (workerItem.NumberOfTimesToRun() <= 0) timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
+		if (this.workerItem is IRunLimitedNumberWorker) timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
 
 		if (RunAtSpecificTime())
 		{
 			timer.AutoReset = false;
 
-			var timeWorkItem = workerItem as IRunAtSpecificTimeWorker;
+			var timeWorkItem = this.workerItem as IRunAtSpecificTimeWorker;
 
 			timer.Interval = timeWorkItem.TimeToRun - DateTime.Now;
 		}
