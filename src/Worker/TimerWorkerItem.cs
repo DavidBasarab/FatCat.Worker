@@ -39,7 +39,13 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 		if (workerItem.NumberOfTimesToRun() <= 0) timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
 
-		timer.Interval = this.workerItem.Interval;
+		if (RunAtSpecificTime())
+		{
+			timer.AutoReset = false;
+
+			timer.Interval = this.workerItem.GetSpecificTimeToRun() - DateTime.Now;
+		}
+		else timer.Interval = this.workerItem.Interval;
 
 		timer.OnTimerElapsed = TimerElapsed;
 
@@ -48,11 +54,15 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 	public void Stop() => timer?.Dispose();
 
+	private bool RunAtSpecificTime() => workerItem.GetSpecificTimeToRun() != DateTime.MinValue;
+
 	private void TimerElapsed()
 	{
 		runs++;
 
 		workerItem.DoWork().Wait();
+
+		if (RunAtSpecificTime()) return;
 
 		if (timer.AutoReset) return;
 
