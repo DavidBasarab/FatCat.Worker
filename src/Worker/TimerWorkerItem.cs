@@ -23,7 +23,7 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 	private bool RunForever => NumberOfTimesToRun == -1;
 
-	private bool UnderTimesToRun => runs <= NumberOfTimesToRun;
+	private bool UnderTimesToRun => runs < NumberOfTimesToRun;
 
 	public TimerWorkerItem(ITimerWrapperFactory timerWrapperFactory) => this.timerWrapperFactory = timerWrapperFactory;
 
