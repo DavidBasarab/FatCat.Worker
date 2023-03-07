@@ -6,6 +6,8 @@ public interface IWorkerItem
 
 	Task DoWork();
 
+	DateTime GetSpecificTimeToRun() => DateTime.MinValue;
+
 	int NumberOfTimesToRun() => -1;
 
 	bool WaitOnWorkBeforeDelay() => true;
