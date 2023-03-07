@@ -30,6 +30,6 @@ public class RunningForTheGivenNumberOfAttempts : TimerWorkerItemTests
 		for (var i = 0; i < numberOfTimesToRun + 2; i++) timerWrapper.OnTimerElapsed();
 
 		A.CallTo(() => timerWrapper.Start())
-		.MustHaveHappened(numberOfTimesToRun + 1, Times.Exactly);
+		.MustHaveHappened(numberOfTimesToRun, Times.Exactly);
 	}
 }
