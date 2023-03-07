@@ -28,7 +28,7 @@ public class AddDynamicWorkerClosedOver : WorkerRunnerTests
 	{
 		workerRunner.AddDynamicWorker<TestDynWorker>();
 
-		A.CallTo(() => timeWrapperFactory.CreateTimerWrapper())
+		A.CallTo(() => timeWorkerItemFactory.CreateTimerWorkerItem())
 		.MustHaveHappened();
 	}
 
@@ -46,7 +46,7 @@ public class AddDynamicWorkerClosedOver : WorkerRunnerTests
 	{
 		workerRunner.AddDynamicWorker<TestDynWorker>();
 
-		A.CallTo(() => timerWrapper.Start(instanceWorker.DoWork, interval, true))
+		A.CallTo(() => timerWorkerItem.Start(instanceWorker))
 		.MustHaveHappened();
 	}
 
@@ -57,7 +57,7 @@ public class AddDynamicWorkerClosedOver : WorkerRunnerTests
 
 		workerRunner.Timers
 					.Should()
-					.Contain(timerWrapper);
+					.Contain(timerWorkerItem);
 	}
 
 	private class TestDynWorker : IDynamicWorker

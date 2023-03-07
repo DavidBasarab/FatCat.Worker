@@ -6,6 +6,8 @@ public interface IWorkerItem
 
 	Task DoWork();
 
+	int NumberOfTimesToRun() => -1;
+
 	bool WaitOnWorkBeforeDelay() => true;
 }
 

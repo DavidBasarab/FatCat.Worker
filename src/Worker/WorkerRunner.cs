@@ -22,14 +22,14 @@ public class WorkerRunner : IWorkerRunner
 	private readonly ISystemScope systemScope;
 
 	private bool started;
-	private ITimerWrapperFactory timerWrapperFactory;
+	private ITimerWorkerItemFactory timerWorkerItemFactory;
 
-	internal ConcurrentBag<ITimerWrapper> Timers { get; } = new();
+	internal ConcurrentBag<ITimerWorkerItem> Timers { get; } = new();
 
-	internal ITimerWrapperFactory TimerWrapperFactory
+	internal ITimerWorkerItemFactory TimerWorkerItemFactory
 	{
-		get => timerWrapperFactory ??= systemScope.Resolve<ITimerWrapperFactory>();
-		set => timerWrapperFactory = value;
+		get => timerWorkerItemFactory ??= systemScope.Resolve<ITimerWorkerItemFactory>();
+		set => timerWorkerItemFactory = value;
 	}
 
 	public WorkerRunner(IReflectionTools reflectionTools,
@@ -78,9 +78,9 @@ public class WorkerRunner : IWorkerRunner
 
 	private void StartTimeForWorkerInstance(IWorkerItem worker)
 	{
-		var timer = TimerWrapperFactory.CreateTimerWrapper();
+		var timer = TimerWorkerItemFactory.CreateTimerWorkerItem();
 
-		timer.Start(worker.DoWork, worker.Interval, worker.WaitOnWorkBeforeDelay());
+		timer.Start(worker);
 
 		Timers.Add(timer);
 	}

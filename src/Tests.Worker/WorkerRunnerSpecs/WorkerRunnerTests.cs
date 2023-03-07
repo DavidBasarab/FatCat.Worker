@@ -13,11 +13,11 @@ public abstract class WorkerRunnerTests
 	protected TimeSpan interval;
 	protected IReflectionTools reflectionTools;
 	protected ISystemScope systemScope;
-	protected ITimerWrapper timerWrapper;
-	protected ITimerWrapperFactory timeWrapperFactory;
+	protected ITimerWorkerItem timerWorkerItem;
+	protected ITimerWorkerItemFactory timeWorkerItemFactory;
 	protected IWorker worker;
 	protected List<Type> workerTypes;
-	protected List<ITimerWrapper> timers;
+	protected List<ITimerWorkerItem> timers;
 
 	protected WorkerRunnerTests()
 	{
@@ -25,7 +25,7 @@ public abstract class WorkerRunnerTests
 		SetUpTimeWrapperFactory();
 		SetUpSystemScope();
 
-		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWrapperFactory = timeWrapperFactory };
+		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWorkerItemFactory = timeWorkerItemFactory };
 	}
 
 	private void SetUpReflectionTools()
@@ -63,12 +63,12 @@ public abstract class WorkerRunnerTests
 
 	private void SetUpTimeWrapperFactory()
 	{
-		timeWrapperFactory = A.Fake<ITimerWrapperFactory>();
+		timeWorkerItemFactory = A.Fake<ITimerWorkerItemFactory>();
 
-		timerWrapper = A.Fake<ITimerWrapper>();
+		timerWorkerItem = A.Fake<ITimerWorkerItem>();
 
-		A.CallTo(() => timeWrapperFactory.CreateTimerWrapper())
-		.Returns(timerWrapper);
+		A.CallTo(() => timeWorkerItemFactory.CreateTimerWorkerItem())
+		.Returns(timerWorkerItem);
 	}
 
 	private void SetUpWorker()
@@ -86,11 +86,11 @@ public abstract class WorkerRunnerTests
 
 	protected void SetUpFakeTimers()
 	{
-		timers = new List<ITimerWrapper>();
+		timers = new List<ITimerWorkerItem>();
 
 		for (var i = 0; i < 3; i++)
 		{
-			var timer = A.Fake<ITimerWrapper>();
+			var timer = A.Fake<ITimerWorkerItem>();
 
 			timers.Add(timer);
 
