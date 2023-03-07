@@ -4,20 +4,20 @@ using Humanizer;
 
 namespace OneOff;
 
-public class WorkToRunAGivenDateTIme : IWorker
+public class WorkToRunAGivenDateTIme : IRunAtSpecificTimeWorker
 {
-	private readonly DateTime timeToRun;
-
 	public TimeSpan Interval => 1.Seconds();
 
-	public WorkToRunAGivenDateTIme() => timeToRun = DateTime.Now.AddSeconds(5);
+	public DateTime TimeToRun { get; }
+
+	public WorkToRunAGivenDateTIme() => TimeToRun = DateTime.Now.AddSeconds(5);
 
 	public Task DoWork()
 	{
-		ConsoleLog.WriteGreen($"I am running at the given time of {timeToRun}");
+		ConsoleLog.WriteGreen($"I am running at the given time of {TimeToRun}");
 
 		return Task.CompletedTask;
 	}
 
-	public DateTime GetSpecificTimeToRun() => timeToRun;
+	public DateTime GetSpecificTimeToRun() => TimeToRun;
 }

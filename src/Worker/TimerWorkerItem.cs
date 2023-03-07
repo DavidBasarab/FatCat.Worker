@@ -43,7 +43,9 @@ public class TimerWorkerItem : ITimerWorkerItem
 		{
 			timer.AutoReset = false;
 
-			timer.Interval = this.workerItem.GetSpecificTimeToRun() - DateTime.Now;
+			var timeWorkItem = workerItem as IRunAtSpecificTimeWorker;
+
+			timer.Interval = timeWorkItem.TimeToRun - DateTime.Now;
 		}
 		else timer.Interval = this.workerItem.Interval;
 
@@ -54,7 +56,7 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 	public void Stop() => timer?.Dispose();
 
-	private bool RunAtSpecificTime() => workerItem.GetSpecificTimeToRun() != DateTime.MinValue;
+	private bool RunAtSpecificTime() => workerItem is IRunAtSpecificTimeWorker;
 
 	private void TimerElapsed()
 	{

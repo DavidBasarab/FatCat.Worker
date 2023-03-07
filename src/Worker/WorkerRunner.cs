@@ -61,7 +61,7 @@ public class WorkerRunner : IWorkerRunner
 
 		foreach (var workerType in foundWorkerTypes)
 		{
-			if (workerType == typeof(IDynamicWorker)) continue;
+			if (workerType == typeof(IDynamicWorker) || workerType == typeof(IRunAtSpecificTimeWorker)) continue;
 
 			StartWorker(workerType);
 		}
