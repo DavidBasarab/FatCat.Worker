@@ -12,7 +12,7 @@ public interface ITimerWorkerItem : IDisposable
 }
 
 [ExcludeFromCodeCoverage(Justification = "This is a wrapper for the timer thread thus it is not testable")]
-internal class TimerWorkerItem : ITimerWorkerItem
+public class TimerWorkerItem : ITimerWorkerItem
 {
 	private readonly ITimerWrapperFactory timerWrapperFactory;
 	private ITimerWrapper timer;
@@ -38,14 +38,7 @@ internal class TimerWorkerItem : ITimerWorkerItem
 		timer.Start();
 	}
 
-	public void Stop()
-	{
-		// TODO : Unit Test
-		// timer?.Dispose();
-
-		ConsoleLog.WriteGreen("TEMP");
-		ConsoleLog.WriteGreen("TEMP");
-	}
+	public void Stop() => timer?.Dispose();
 
 	public void TimerElapsed()
 	{
