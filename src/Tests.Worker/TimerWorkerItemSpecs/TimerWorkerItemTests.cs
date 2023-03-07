@@ -9,7 +9,7 @@ public abstract class TimerWorkerItemTests
 {
 	protected readonly TimerWorkerItem timerWorkerItem;
 	protected TimeSpan interval;
-	private int numberOfTimesToRun;
+	protected int numberOfTimesToRun;
 	protected ITimerWrapper timerWrapper;
 	protected ITimerWrapperFactory timerWrapperFactory;
 	protected bool waitForDelay;

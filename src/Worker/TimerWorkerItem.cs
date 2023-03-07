@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using FatCat.Toolkit.Console;
 using FatCat.Worker.Wrappers;
 
 namespace FatCat.Worker;
@@ -15,8 +14,16 @@ public interface ITimerWorkerItem : IDisposable
 public class TimerWorkerItem : ITimerWorkerItem
 {
 	private readonly ITimerWrapperFactory timerWrapperFactory;
+
+	private int runs;
 	private ITimerWrapper timer;
 	private IWorkerItem workerItem;
+
+	private int NumberOfTimesToRun => workerItem.NumberOfTimesToRun();
+
+	private bool RunForever => NumberOfTimesToRun == -1;
+
+	private bool UnderTimesToRun => runs <= NumberOfTimesToRun;
 
 	public TimerWorkerItem(ITimerWrapperFactory timerWrapperFactory) => this.timerWrapperFactory = timerWrapperFactory;
 
@@ -30,7 +37,8 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 		timer = timerWrapperFactory.CreateTimerWrapper();
 
-		timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
+		if (workerItem.NumberOfTimesToRun() <= 0) timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
+
 		timer.Interval = this.workerItem.Interval;
 
 		timer.OnTimerElapsed = TimerElapsed;
@@ -40,15 +48,14 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 	public void Stop() => timer?.Dispose();
 
-	public void TimerElapsed()
+	private void TimerElapsed()
 	{
-		// TODO : Unit Test
+		runs++;
 
 		workerItem.DoWork().Wait();
-		
-		if (!timer.AutoReset) timer.Start();
 
-		ConsoleLog.WriteGreen("TEMP");
-		ConsoleLog.WriteGreen("TEMP");
+		if (timer.AutoReset) return;
+
+		if (RunForever || UnderTimesToRun) timer.Start();
 	}
 }
