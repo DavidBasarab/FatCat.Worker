@@ -44,9 +44,9 @@ public class TimerWorkerItem : ITimerWorkerItem
 	{
 		// TODO : Unit Test
 
-		// workerItem.DoWork().Wait();
-		//
-		// if (!timer.AutoReset) timer.Start();
+		workerItem.DoWork().Wait();
+		
+		if (!timer.AutoReset) timer.Start();
 
 		ConsoleLog.WriteGreen("TEMP");
 		ConsoleLog.WriteGreen("TEMP");
