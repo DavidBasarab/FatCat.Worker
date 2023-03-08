@@ -13,6 +13,8 @@ public interface IDynamicWorker : IWorker { }
 
 public interface IDynamicRunAtSpecificTimeWorker : IDynamicWorker, IRunAtSpecificTimeWorker { }
 
+public interface IDynamicLimitedNumberWorker : IDynamicWorker, IRunLimitedNumberWorker { }
+
 public interface IRunLimitedNumberWorker : IWorker
 {
 	int NumberOfTimesToRun { get; }

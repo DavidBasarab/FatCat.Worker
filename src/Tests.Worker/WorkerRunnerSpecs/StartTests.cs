@@ -32,12 +32,17 @@ public class StartTests : WorkerRunnerTests
 	[InlineData(typeof(IDynamicWorker))]
 	[InlineData(typeof(IRunAtSpecificTimeWorker))]
 	[InlineData(typeof(IRunLimitedNumberWorker))]
+	[InlineData(typeof(IDynamicLimitedNumberWorker))]
+	[InlineData(typeof(IDynamicLimitedNumberWorker))]
+	[InlineData(typeof(IDynamicRunAtSpecificTimeWorker))]
 	public void DoNotUserWorkersInterfaces(Type typeNotToUse) => RunTypeNotToUseTest(typeNotToUse);
 
 	[Theory]
 	[InlineData(typeof(DynamicTestWorker))]
 	[InlineData(typeof(RunAtSpecificTimeTestWorker))]
 	[InlineData(typeof(RunLimitedNumberTestWorker))]
+	[InlineData(typeof(DynamicRunAtSpecificTimeWorker))]
+	[InlineData(typeof(DynamicLimitedNumberWorker))]
 	public void DoNotUserWorkerThatInheritFromWorkerInterfaces(Type typeNotToUse) => RunTypeNotToUseTest(typeNotToUse);
 
 	[Fact]
@@ -95,6 +100,26 @@ public class StartTests : WorkerRunnerTests
 
 		A.CallTo(() => systemScope.Resolve(typeNotToUse))
 		.MustNotHaveHappened();
+	}
+
+	private class DynamicLimitedNumberWorker : IDynamicLimitedNumberWorker
+	{
+		public TimeSpan Interval { get; }
+
+		public int NumberOfTimesToRun { get; }
+
+		public DateTime TimeToRun { get; }
+
+		public Task DoWork() => throw new NotImplementedException();
+	}
+
+	private class DynamicRunAtSpecificTimeWorker : IDynamicRunAtSpecificTimeWorker
+	{
+		public TimeSpan Interval { get; }
+
+		public DateTime TimeToRun { get; }
+
+		public Task DoWork() => throw new NotImplementedException();
 	}
 
 	private class DynamicTestWorker : IDynamicWorker
