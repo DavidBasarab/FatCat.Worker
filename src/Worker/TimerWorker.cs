@@ -47,15 +47,15 @@ public class TimerWorker : ITimerWorker
 
 		if (worker is not IRunLimitedNumberWorker) timer.AutoReset = !worker.WaitOnWorkBeforeDelay();
 
-		// if (RunAtSpecificTime())
-		// {
-		// 	timer.AutoReset = false;
-		//
-		// 	var timeWorkItem = this.workerItem as IRunAtSpecificTimeWorker;
-		//
-		// 	timer.Interval = timeWorkItem.TimeToRun - DateTime.Now;
-		// }
-		// else
+		if (RunAtSpecificTime())
+		{
+			timer.AutoReset = false;
+		
+			var timeWorkItem = worker as IRunAtSpecificTimeWorker;
+		
+			timer.Interval = timeWorkItem.TimeToRun - DateTime.Now;
+		}
+		else
 		{
 			timer.Interval = worker.Interval;
 		}
