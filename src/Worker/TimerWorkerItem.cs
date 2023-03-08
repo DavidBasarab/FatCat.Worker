@@ -45,7 +45,7 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 		timer = timerWrapperFactory.CreateTimerWrapper();
 
-		if (this.workerItem is IRunLimitedNumberWorker) timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
+		if (this.workerItem is not IRunLimitedNumberWorker) timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
 
 		if (RunAtSpecificTime())
 		{

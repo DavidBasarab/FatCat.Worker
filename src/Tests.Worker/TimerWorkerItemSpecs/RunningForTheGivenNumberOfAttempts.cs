@@ -1,4 +1,5 @@
 using FakeItEasy;
+using FatCat.Worker;
 using FluentAssertions;
 using Xunit;
 
@@ -6,16 +7,23 @@ namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
 public class RunningForTheGivenNumberOfAttempts : TimerWorkerItemTests
 {
+	private readonly IRunLimitedNumberWorker numberWorkerItem;
+
 	public RunningForTheGivenNumberOfAttempts()
 	{
 		numberOfTimesToRun = 4;
 		waitForDelay = false;
+
+		numberWorkerItem = A.Fake<IRunLimitedNumberWorker>();
+
+		A.CallTo(() => numberWorkerItem.NumberOfTimesToRun)
+		.Returns(numberOfTimesToRun);
 	}
 
 	[Fact]
 	public void IfNumberOfTimesToRunIsGreaterThan0SetAutoRestToFalse()
 	{
-		timerWorkerItem.Start(workerItem);
+		timerWorkerItem.Start(numberWorkerItem);
 
 		timerWrapper.AutoReset
 					.Should()
@@ -25,7 +33,7 @@ public class RunningForTheGivenNumberOfAttempts : TimerWorkerItemTests
 	[Fact]
 	public void OnlyStartNumberOfTimesToRun()
 	{
-		timerWorkerItem.Start(workerItem);
+		timerWorkerItem.Start(numberWorkerItem);
 
 		for (var i = 0; i < numberOfTimesToRun + 2; i++) timerWrapper.OnTimerElapsed();
 
