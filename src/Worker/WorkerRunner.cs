@@ -24,7 +24,7 @@ public class WorkerRunner : IWorkerRunner
 	private bool started;
 	private ITimerWorkerItemFactory timerWorkerItemFactory;
 
-	internal ConcurrentBag<ITimerWorkerItem> Timers { get; } = new();
+	internal ConcurrentBag<ITimerWorker> Timers { get; } = new();
 
 	internal ITimerWorkerItemFactory TimerWorkerItemFactory
 	{
@@ -78,7 +78,7 @@ public class WorkerRunner : IWorkerRunner
 
 	private static bool SkipType(Type workerType) => workerType == typeof(IDynamicWorker) || workerType == typeof(IRunAtSpecificTimeWorker) || workerType == typeof(IRunLimitedNumberWorker);
 
-	private void StartTimeForWorkerInstance(IWorkerItem worker)
+	private void StartTimeForWorkerInstance(IWorker worker)
 	{
 		var timer = TimerWorkerItemFactory.CreateTimerWorkerItem();
 
@@ -91,7 +91,7 @@ public class WorkerRunner : IWorkerRunner
 	{
 		ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
 
-		var worker = systemScope.Resolve(workerType) as IWorkerItem;
+		var worker = systemScope.Resolve(workerType) as IWorker;
 
 		StartTimeForWorkerInstance(worker);
 	}

@@ -5,7 +5,7 @@ namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
 public class TimerElapsedTests : TimerWorkerItemTests
 {
-	public TimerElapsedTests() => timerWorkerItem.Start(workerItem);
+	public TimerElapsedTests() => timerWorker.Start(workerItem);
 
 	[Fact]
 	public void IfAutoResetIsFalseStartTimer()

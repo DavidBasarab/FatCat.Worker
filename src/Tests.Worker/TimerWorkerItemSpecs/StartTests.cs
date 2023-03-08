@@ -9,7 +9,7 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void CreateTimerWrapper()
 	{
-		timerWorkerItem.Start(workerItem);
+		timerWorker.Start(workerItem);
 
 		A.CallTo(() => timerWrapperFactory.CreateTimerWrapper())
 		.MustHaveHappened();
@@ -18,8 +18,8 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void OnlyStartTheTimeOnce()
 	{
-		timerWorkerItem.Start(workerItem);
-		timerWorkerItem.Start(workerItem);
+		timerWorker.Start(workerItem);
+		timerWorker.Start(workerItem);
 
 		A.CallTo(() => timerWrapper.Start())
 		.MustHaveHappenedOnceExactly();
@@ -28,7 +28,7 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void SetAutoResetOnTimer()
 	{
-		timerWorkerItem.Start(workerItem);
+		timerWorker.Start(workerItem);
 
 		timerWrapper.AutoReset
 					.Should()
@@ -38,7 +38,7 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void SetIntervalOnTimer()
 	{
-		timerWorkerItem.Start(workerItem);
+		timerWorker.Start(workerItem);
 
 		timerWrapper.Interval
 					.Should()
@@ -48,7 +48,7 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void SetTimerElapsedFunction()
 	{
-		timerWorkerItem.Start(workerItem);
+		timerWorker.Start(workerItem);
 
 		timerWrapper.OnTimerElapsed
 					.Should()
@@ -58,7 +58,7 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void StartTimer()
 	{
-		timerWorkerItem.Start(workerItem);
+		timerWorker.Start(workerItem);
 
 		A.CallTo(() => timerWrapper.Start())
 		.MustHaveHappened();

@@ -23,7 +23,7 @@ public class RunningForTheGivenNumberOfAttempts : TimerWorkerItemTests
 	[Fact]
 	public void IfNumberOfTimesToRunIsGreaterThan0SetAutoRestToFalse()
 	{
-		timerWorkerItem.Start(numberWorkerItem);
+		timerWorker.Start(numberWorkerItem);
 
 		timerWrapper.AutoReset
 					.Should()
@@ -33,7 +33,7 @@ public class RunningForTheGivenNumberOfAttempts : TimerWorkerItemTests
 	[Fact]
 	public void OnlyStartNumberOfTimesToRun()
 	{
-		timerWorkerItem.Start(numberWorkerItem);
+		timerWorker.Start(numberWorkerItem);
 
 		for (var i = 0; i < numberOfTimesToRun + 2; i++) timerWrapper.OnTimerElapsed();
 

@@ -21,7 +21,7 @@ public class WorkerModule : Module
 			.As<ITimerWorkerItemFactory>()
 			.SingleInstance();
 
-		builder.RegisterType<TimerWorkerItem>()
-				.As<ITimerWorkerItem>();
+		builder.RegisterType<TimerWorker>()
+				.As<ITimerWorker>();
 	}
 }

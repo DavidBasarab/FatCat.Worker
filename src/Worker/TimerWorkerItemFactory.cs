@@ -5,7 +5,7 @@ namespace FatCat.Worker;
 
 public interface ITimerWorkerItemFactory
 {
-	ITimerWorkerItem CreateTimerWorkerItem();
+	ITimerWorker CreateTimerWorkerItem();
 }
 
 [ExcludeFromCodeCoverage(Justification = "")]
@@ -15,5 +15,5 @@ internal class TimerWorkerItemFactory : ITimerWorkerItemFactory
 
 	public TimerWorkerItemFactory(ISystemScope systemScope) => this.systemScope = systemScope;
 
-	public ITimerWorkerItem CreateTimerWorkerItem() => systemScope.Resolve<ITimerWorkerItem>();
+	public ITimerWorker CreateTimerWorkerItem() => systemScope.Resolve<ITimerWorker>();
 }

@@ -7,20 +7,20 @@ namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
 public abstract class TimerWorkerItemTests
 {
-	protected readonly TimerWorkerItem timerWorkerItem;
+	protected readonly TimerWorker timerWorker;
 	protected TimeSpan interval;
 	protected int numberOfTimesToRun;
 	protected ITimerWrapper timerWrapper;
 	protected ITimerWrapperFactory timerWrapperFactory;
 	protected bool waitForDelay;
-	protected IWorkerItem workerItem;
+	protected IWorker workerItem;
 
 	protected TimerWorkerItemTests()
 	{
 		SetUpTimerWrapperFactory();
 		SetUpWorkerItem();
 
-		timerWorkerItem = new TimerWorkerItem(timerWrapperFactory);
+		timerWorker = new TimerWorker(timerWrapperFactory);
 	}
 
 	private void SetUpTimerWrapperFactory()
@@ -35,7 +35,7 @@ public abstract class TimerWorkerItemTests
 
 	private void SetUpWorkerItem()
 	{
-		workerItem = A.Fake<IWorkerItem>();
+		workerItem = A.Fake<IWorker>();
 
 		interval = 45.Seconds();
 		numberOfTimesToRun = -1;

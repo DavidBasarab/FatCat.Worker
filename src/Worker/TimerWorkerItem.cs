@@ -3,27 +3,27 @@ using FatCat.Worker.Wrappers;
 
 namespace FatCat.Worker;
 
-public interface ITimerWorkerItem : IDisposable
+public interface ITimerWorker : IDisposable
 {
-	void Start(IWorkerItem workerItem);
+	void Start(IWorker workerToStart);
 
 	void Stop();
 }
 
 [ExcludeFromCodeCoverage(Justification = "This is a wrapper for the timer thread thus it is not testable")]
-public class TimerWorkerItem : ITimerWorkerItem
+public class TimerWorker : ITimerWorker
 {
 	private readonly ITimerWrapperFactory timerWrapperFactory;
 
 	private int runs;
 	private ITimerWrapper timer;
-	private IWorkerItem workerItem;
+	private IWorker worker;
 
 	private int NumberOfTimesToRun
 	{
 		get
 		{
-			if (workerItem is IRunLimitedNumberWorker timesWorker) return timesWorker.NumberOfTimesToRun;
+			if (worker is IRunLimitedNumberWorker timesWorker) return timesWorker.NumberOfTimesToRun;
 
 			return -1;
 		}
@@ -33,29 +33,32 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 	private bool UnderTimesToRun => runs < NumberOfTimesToRun;
 
-	public TimerWorkerItem(ITimerWrapperFactory timerWrapperFactory) => this.timerWrapperFactory = timerWrapperFactory;
+	public TimerWorker(ITimerWrapperFactory timerWrapperFactory) => this.timerWrapperFactory = timerWrapperFactory;
 
 	public void Dispose() => timer?.Dispose();
 
-	public void Start(IWorkerItem workerItem)
+	public void Start(IWorker workerToStart)
 	{
-		this.workerItem = workerItem;
+		worker = workerToStart;
 
 		if (timer != null) return;
 
 		timer = timerWrapperFactory.CreateTimerWrapper();
 
-		if (this.workerItem is not IRunLimitedNumberWorker) timer.AutoReset = !this.workerItem.WaitOnWorkBeforeDelay();
+		if (worker is not IRunLimitedNumberWorker) timer.AutoReset = !worker.WaitOnWorkBeforeDelay();
 
-		if (RunAtSpecificTime())
+		// if (RunAtSpecificTime())
+		// {
+		// 	timer.AutoReset = false;
+		//
+		// 	var timeWorkItem = this.workerItem as IRunAtSpecificTimeWorker;
+		//
+		// 	timer.Interval = timeWorkItem.TimeToRun - DateTime.Now;
+		// }
+		// else
 		{
-			timer.AutoReset = false;
-
-			var timeWorkItem = this.workerItem as IRunAtSpecificTimeWorker;
-
-			timer.Interval = timeWorkItem.TimeToRun - DateTime.Now;
+			timer.Interval = worker.Interval;
 		}
-		else timer.Interval = this.workerItem.Interval;
 
 		timer.OnTimerElapsed = TimerElapsed;
 
@@ -64,13 +67,13 @@ public class TimerWorkerItem : ITimerWorkerItem
 
 	public void Stop() => timer?.Dispose();
 
-	private bool RunAtSpecificTime() => workerItem is IRunAtSpecificTimeWorker;
+	private bool RunAtSpecificTime() => worker is IRunAtSpecificTimeWorker;
 
 	private void TimerElapsed()
 	{
 		runs++;
 
-		workerItem.DoWork().Wait();
+		worker.DoWork().Wait();
 
 		if (RunAtSpecificTime()) return;
 
