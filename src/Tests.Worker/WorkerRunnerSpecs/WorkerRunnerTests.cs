@@ -13,11 +13,11 @@ public abstract class WorkerRunnerTests
 	protected TimeSpan interval;
 	protected IReflectionTools reflectionTools;
 	protected ISystemScope systemScope;
+	protected List<ITimerWorker> timers;
 	protected ITimerWorker timerWorker;
 	protected ITimerWorkerItemFactory timeWorkerItemFactory;
 	protected IWorker worker;
 	protected List<Type> workerTypes;
-	protected List<ITimerWorker> timers;
 
 	protected WorkerRunnerTests()
 	{
@@ -26,6 +26,20 @@ public abstract class WorkerRunnerTests
 		SetUpSystemScope();
 
 		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWorkerItemFactory = timeWorkerItemFactory };
+	}
+
+	protected void SetUpFakeTimers()
+	{
+		timers = new List<ITimerWorker>();
+
+		for (var i = 0; i < 3; i++)
+		{
+			var timer = A.Fake<ITimerWorker>();
+
+			timers.Add(timer);
+
+			workerRunner.Timers.Add(timer);
+		}
 	}
 
 	private void SetUpReflectionTools()
@@ -48,7 +62,7 @@ public abstract class WorkerRunnerTests
 					};
 
 		A.CallTo(() => reflectionTools.FindTypesImplementing<IWorker>(A<List<Assembly>>._))
-		.Returns(workerTypes);
+		.ReturnsLazily(() => workerTypes);
 	}
 
 	private void SetUpSystemScope()
@@ -82,19 +96,5 @@ public abstract class WorkerRunnerTests
 
 		A.CallTo(() => worker.WaitOnWorkBeforeDelay())
 		.Returns(true);
-	}
-
-	protected void SetUpFakeTimers()
-	{
-		timers = new List<ITimerWorker>();
-
-		for (var i = 0; i < 3; i++)
-		{
-			var timer = A.Fake<ITimerWorker>();
-
-			timers.Add(timer);
-
-			workerRunner.Timers.Add(timer);
-		}
 	}
 }

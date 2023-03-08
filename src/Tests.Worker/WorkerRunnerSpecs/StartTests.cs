@@ -28,6 +28,20 @@ public class StartTests : WorkerRunnerTests
 		}
 	}
 
+	[Theory]
+	[InlineData(typeof(IDynamicWorker))]
+	[InlineData(typeof(IRunAtSpecificTimeWorker))]
+	[InlineData(typeof(IRunLimitedNumberWorker))]
+	public void DoNotUserWorkersInterfaces(Type typeNotToUse)
+	{
+		workerTypes = new List<Type> { typeNotToUse };
+
+		workerRunner.Start();
+
+		A.CallTo(() => systemScope.Resolve(typeNotToUse))
+		.MustNotHaveHappened();
+	}
+
 	[Fact]
 	public void FindTypesImplementingIWorker()
 	{
@@ -73,5 +87,30 @@ public class StartTests : WorkerRunnerTests
 
 		A.CallTo(() => timerWorker.Start(worker))
 		.MustHaveHappened(workerTypes.Count, Times.Exactly);
+	}
+
+	private class DynamicTestWorker : IDynamicWorker
+	{
+		public TimeSpan Interval { get; }
+
+		public Task DoWork() => throw new NotImplementedException();
+	}
+
+	private class RunAtSpecificTimeTestWorker : IRunAtSpecificTimeWorker
+	{
+		public TimeSpan Interval { get; }
+
+		public DateTime TimeToRun { get; }
+
+		public Task DoWork() => throw new NotImplementedException();
+	}
+
+	private class RunLimitedNumberTestWorker : IRunLimitedNumberWorker
+	{
+		public TimeSpan Interval { get; }
+
+		public int NumberOfTimesToRun { get; }
+
+		public Task DoWork() => throw new NotImplementedException();
 	}
 }
