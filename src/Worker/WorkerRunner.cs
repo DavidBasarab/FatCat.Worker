@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using FatCat.Toolkit;
 using FatCat.Toolkit.Console;
+using FatCat.Toolkit.Extensions;
 using FatCat.Toolkit.Injection;
 
 namespace FatCat.Worker;
@@ -76,7 +77,12 @@ public class WorkerRunner : IWorkerRunner
 		foreach (var timer in Timers) timer.Dispose();
 	}
 
-	private static bool SkipType(Type workerType) => workerType == typeof(IDynamicWorker) || workerType == typeof(IRunAtSpecificTimeWorker) || workerType == typeof(IRunLimitedNumberWorker);
+	private static bool SkipType(Type workerType)
+	{
+		if (workerType.Implements(typeof(IDynamicWorker)) || workerType.Implements(typeof(IRunAtSpecificTimeWorker)) || workerType.Implements(typeof(IRunLimitedNumberWorker))) return true;
+
+		return workerType == typeof(IDynamicWorker) || workerType == typeof(IRunAtSpecificTimeWorker) || workerType == typeof(IRunLimitedNumberWorker);
+	}
 
 	private void StartTimeForWorkerInstance(IWorker worker)
 	{

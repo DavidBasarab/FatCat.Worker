@@ -32,15 +32,13 @@ public class StartTests : WorkerRunnerTests
 	[InlineData(typeof(IDynamicWorker))]
 	[InlineData(typeof(IRunAtSpecificTimeWorker))]
 	[InlineData(typeof(IRunLimitedNumberWorker))]
-	public void DoNotUserWorkersInterfaces(Type typeNotToUse)
-	{
-		workerTypes = new List<Type> { typeNotToUse };
+	public void DoNotUserWorkersInterfaces(Type typeNotToUse) => RunTypeNotToUseTest(typeNotToUse);
 
-		workerRunner.Start();
-
-		A.CallTo(() => systemScope.Resolve(typeNotToUse))
-		.MustNotHaveHappened();
-	}
+	[Theory]
+	[InlineData(typeof(DynamicTestWorker))]
+	[InlineData(typeof(RunAtSpecificTimeTestWorker))]
+	[InlineData(typeof(RunLimitedNumberTestWorker))]
+	public void DoNotUserWorkerThatInheritFromWorkerInterfaces(Type typeNotToUse) => RunTypeNotToUseTest(typeNotToUse);
 
 	[Fact]
 	public void FindTypesImplementingIWorker()
@@ -87,6 +85,16 @@ public class StartTests : WorkerRunnerTests
 
 		A.CallTo(() => timerWorker.Start(worker))
 		.MustHaveHappened(workerTypes.Count, Times.Exactly);
+	}
+
+	private void RunTypeNotToUseTest(Type typeNotToUse)
+	{
+		workerTypes = new List<Type> { typeNotToUse };
+
+		workerRunner.Start();
+
+		A.CallTo(() => systemScope.Resolve(typeNotToUse))
+		.MustNotHaveHappened();
 	}
 
 	private class DynamicTestWorker : IDynamicWorker
