@@ -11,7 +11,7 @@ public interface IWorker
 
 public interface IDynamicWorker : IWorker { }
 
-public interface IDynamicRunAtSpecificTimeWorker : IRunAtSpecificTimeWorker { }
+public interface IDynamicRunAtSpecificTimeWorker : IDynamicWorker, IRunAtSpecificTimeWorker { }
 
 public interface IRunLimitedNumberWorker : IWorker
 {

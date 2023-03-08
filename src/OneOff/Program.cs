@@ -19,6 +19,10 @@ public static class Program
 		workerRunner.Start();
 
 		ConsoleLog.WriteYellow("After worker runner start");
+		
+		Task.Delay(4.Seconds()).Wait();
+		
+		workerRunner.AddDynamicWorker<RunASetTimeWorker>();
 
 		await Task.Delay(15.Seconds());
 
