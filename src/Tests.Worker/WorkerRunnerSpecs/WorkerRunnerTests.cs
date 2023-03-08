@@ -15,7 +15,7 @@ public abstract class WorkerRunnerTests
 	protected ISystemScope systemScope;
 	protected List<ITimerWorker> timers;
 	protected ITimerWorker timerWorker;
-	protected ITimerWorkerItemFactory timeWorkerItemFactory;
+	protected ITimerWorkerFactory timeWorkerFactory;
 	protected IWorker worker;
 	protected List<Type> workerTypes;
 
@@ -25,7 +25,7 @@ public abstract class WorkerRunnerTests
 		SetUpTimeWrapperFactory();
 		SetUpSystemScope();
 
-		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWorkerItemFactory = timeWorkerItemFactory };
+		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWorkerFactory = timeWorkerFactory };
 	}
 
 	protected void SetUpFakeTimers()
@@ -77,11 +77,11 @@ public abstract class WorkerRunnerTests
 
 	private void SetUpTimeWrapperFactory()
 	{
-		timeWorkerItemFactory = A.Fake<ITimerWorkerItemFactory>();
+		timeWorkerFactory = A.Fake<ITimerWorkerFactory>();
 
 		timerWorker = A.Fake<ITimerWorker>();
 
-		A.CallTo(() => timeWorkerItemFactory.CreateTimerWorkerItem())
+		A.CallTo(() => timeWorkerFactory.CreateTimerWorker())
 		.Returns(timerWorker);
 	}
 

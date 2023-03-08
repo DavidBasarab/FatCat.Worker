@@ -4,12 +4,12 @@ using Xunit;
 
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
-public class StartTests : TimerWorkerItemTests
+public class StartTests : TimerWorkerTests
 {
 	[Fact]
 	public void CreateTimerWrapper()
 	{
-		timerWorker.Start(workerItem);
+		timerWorker.Start(worker);
 
 		A.CallTo(() => timerWrapperFactory.CreateTimerWrapper())
 		.MustHaveHappened();
@@ -18,8 +18,8 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void OnlyStartTheTimeOnce()
 	{
-		timerWorker.Start(workerItem);
-		timerWorker.Start(workerItem);
+		timerWorker.Start(worker);
+		timerWorker.Start(worker);
 
 		A.CallTo(() => timerWrapper.Start())
 		.MustHaveHappenedOnceExactly();
@@ -28,7 +28,7 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void SetAutoResetOnTimer()
 	{
-		timerWorker.Start(workerItem);
+		timerWorker.Start(worker);
 
 		timerWrapper.AutoReset
 					.Should()
@@ -38,7 +38,7 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void SetIntervalOnTimer()
 	{
-		timerWorker.Start(workerItem);
+		timerWorker.Start(worker);
 
 		timerWrapper.Interval
 					.Should()
@@ -48,7 +48,7 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void SetTimerElapsedFunction()
 	{
-		timerWorker.Start(workerItem);
+		timerWorker.Start(worker);
 
 		timerWrapper.OnTimerElapsed
 					.Should()
@@ -58,7 +58,7 @@ public class StartTests : TimerWorkerItemTests
 	[Fact]
 	public void StartTimer()
 	{
-		timerWorker.Start(workerItem);
+		timerWorker.Start(worker);
 
 		A.CallTo(() => timerWrapper.Start())
 		.MustHaveHappened();

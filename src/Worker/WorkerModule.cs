@@ -17,8 +17,8 @@ public class WorkerModule : Module
 			.SingleInstance();
 
 		builder
-			.RegisterType<TimerWorkerItemFactory>()
-			.As<ITimerWorkerItemFactory>()
+			.RegisterType<TimerWorkerFactory>()
+			.As<ITimerWorkerFactory>()
 			.SingleInstance();
 
 		builder.RegisterType<TimerWorker>()

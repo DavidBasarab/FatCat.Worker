@@ -3,9 +3,9 @@ using Xunit;
 
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
-public class TimerElapsedTests : TimerWorkerItemTests
+public class TimerElapsedTests : TimerWorkerTests
 {
-	public TimerElapsedTests() => timerWorker.Start(workerItem);
+	public TimerElapsedTests() => timerWorker.Start(worker);
 
 	[Fact]
 	public void IfAutoResetIsFalseStartTimer()
@@ -36,7 +36,7 @@ public class TimerElapsedTests : TimerWorkerItemTests
 	{
 		timerWrapper.OnTimerElapsed();
 
-		A.CallTo(() => workerItem.DoWork())
+		A.CallTo(() => worker.DoWork())
 		.MustHaveHappened();
 	}
 }

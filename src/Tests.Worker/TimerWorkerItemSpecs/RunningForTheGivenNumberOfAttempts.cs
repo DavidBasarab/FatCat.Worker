@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
-public class RunningForTheGivenNumberOfAttempts : TimerWorkerItemTests
+public class RunningForTheGivenNumberOfAttempts : TimerWorkerTests
 {
 	private readonly IRunLimitedNumberWorker numberWorkerItem;
 

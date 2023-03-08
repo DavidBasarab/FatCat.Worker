@@ -5,7 +5,7 @@ using Humanizer;
 
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
-public abstract class TimerWorkerItemTests
+public abstract class TimerWorkerTests
 {
 	protected readonly TimerWorker timerWorker;
 	protected TimeSpan interval;
@@ -13,9 +13,9 @@ public abstract class TimerWorkerItemTests
 	protected ITimerWrapper timerWrapper;
 	protected ITimerWrapperFactory timerWrapperFactory;
 	protected bool waitForDelay;
-	protected IWorker workerItem;
+	protected IWorker worker;
 
-	protected TimerWorkerItemTests()
+	protected TimerWorkerTests()
 	{
 		SetUpTimerWrapperFactory();
 		SetUpWorkerItem();
@@ -35,16 +35,16 @@ public abstract class TimerWorkerItemTests
 
 	private void SetUpWorkerItem()
 	{
-		workerItem = A.Fake<IWorker>();
+		worker = A.Fake<IWorker>();
 
 		interval = 45.Seconds();
 		numberOfTimesToRun = -1;
 		waitForDelay = true;
 
-		A.CallTo(() => workerItem.Interval)
+		A.CallTo(() => worker.Interval)
 		.ReturnsLazily(() => interval);
 
-		A.CallTo(() => workerItem.WaitOnWorkBeforeDelay())
+		A.CallTo(() => worker.WaitOnWorkBeforeDelay())
 		.ReturnsLazily(() => waitForDelay);
 	}
 }

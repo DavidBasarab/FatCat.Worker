@@ -27,7 +27,7 @@ public class AddDynamicWorkerInstance : WorkerRunnerTests
 	{
 		workerRunner.AddDynamicWorker(workerInstance);
 
-		A.CallTo(() => timeWorkerItemFactory.CreateTimerWorkerItem())
+		A.CallTo(() => timeWorkerFactory.CreateTimerWorker())
 		.MustHaveHappened();
 	}
 

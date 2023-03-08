@@ -3,9 +3,9 @@ using Xunit;
 
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
-public class StopTests : TimerWorkerItemTests
+public class StopTests : TimerWorkerTests
 {
-	public StopTests() { timerWorker.Start(workerItem); }
+	public StopTests() { timerWorker.Start(worker); }
 
 	[Fact]
 	public void CallDisposeOnTimer()
