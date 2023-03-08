@@ -1,8 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using FatCat.Toolkit;
-using FatCat.Toolkit.Console;
 using FatCat.Toolkit.Extensions;
 using FatCat.Toolkit.Injection;
+using FatCat.Toolkit.Logging;
 
 namespace FatCat.Worker;
 
@@ -21,6 +21,7 @@ public class WorkerRunner : IWorkerRunner
 {
 	private readonly IReflectionTools reflectionTools;
 	private readonly ISystemScope systemScope;
+	private readonly IToolkitLogger toolkitLogger;
 
 	private bool started;
 	private ITimerWorkerFactory timerWorkerFactory;
@@ -34,10 +35,12 @@ public class WorkerRunner : IWorkerRunner
 	}
 
 	public WorkerRunner(IReflectionTools reflectionTools,
-						ISystemScope systemScope)
+						ISystemScope systemScope,
+						IToolkitLogger toolkitLogger)
 	{
 		this.reflectionTools = reflectionTools;
 		this.systemScope = systemScope;
+		this.toolkitLogger = toolkitLogger;
 	}
 
 	public void AddDynamicWorker<T>() where T : IDynamicWorker => StartWorker(typeof(T));
@@ -95,7 +98,7 @@ public class WorkerRunner : IWorkerRunner
 
 	private void StartWorker(Type workerType)
 	{
-		ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
+		toolkitLogger.Debug($"   Starting worker <{workerType.FullName}>");
 
 		var worker = systemScope.Resolve(workerType) as IWorker;
 

@@ -33,7 +33,6 @@ public class StartTests : WorkerRunnerTests
 	[InlineData(typeof(IRunAtSpecificTimeWorker))]
 	[InlineData(typeof(IRunLimitedNumberWorker))]
 	[InlineData(typeof(IDynamicLimitedNumberWorker))]
-	[InlineData(typeof(IDynamicLimitedNumberWorker))]
 	[InlineData(typeof(IDynamicRunAtSpecificTimeWorker))]
 	public void DoNotUserWorkersInterfaces(Type typeNotToUse) => RunTypeNotToUseTest(typeNotToUse);
 
