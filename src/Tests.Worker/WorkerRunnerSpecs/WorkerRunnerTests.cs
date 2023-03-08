@@ -13,11 +13,11 @@ public abstract class WorkerRunnerTests
 	protected TimeSpan interval;
 	protected IReflectionTools reflectionTools;
 	protected ISystemScope systemScope;
-	protected ITimerWorkerItem timerWorkerItem;
-	protected ITimerWorkerItemFactory timeWorkerItemFactory;
+	protected List<ITimerWorker> timers;
+	protected ITimerWorker timerWorker;
+	protected ITimerWorkerFactory timeWorkerFactory;
 	protected IWorker worker;
 	protected List<Type> workerTypes;
-	protected List<ITimerWorkerItem> timers;
 
 	protected WorkerRunnerTests()
 	{
@@ -25,7 +25,21 @@ public abstract class WorkerRunnerTests
 		SetUpTimeWrapperFactory();
 		SetUpSystemScope();
 
-		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWorkerItemFactory = timeWorkerItemFactory };
+		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWorkerFactory = timeWorkerFactory };
+	}
+
+	protected void SetUpFakeTimers()
+	{
+		timers = new List<ITimerWorker>();
+
+		for (var i = 0; i < 3; i++)
+		{
+			var timer = A.Fake<ITimerWorker>();
+
+			timers.Add(timer);
+
+			workerRunner.Timers.Add(timer);
+		}
 	}
 
 	private void SetUpReflectionTools()
@@ -48,7 +62,7 @@ public abstract class WorkerRunnerTests
 					};
 
 		A.CallTo(() => reflectionTools.FindTypesImplementing<IWorker>(A<List<Assembly>>._))
-		.Returns(workerTypes);
+		.ReturnsLazily(() => workerTypes);
 	}
 
 	private void SetUpSystemScope()
@@ -63,12 +77,12 @@ public abstract class WorkerRunnerTests
 
 	private void SetUpTimeWrapperFactory()
 	{
-		timeWorkerItemFactory = A.Fake<ITimerWorkerItemFactory>();
+		timeWorkerFactory = A.Fake<ITimerWorkerFactory>();
 
-		timerWorkerItem = A.Fake<ITimerWorkerItem>();
+		timerWorker = A.Fake<ITimerWorker>();
 
-		A.CallTo(() => timeWorkerItemFactory.CreateTimerWorkerItem())
-		.Returns(timerWorkerItem);
+		A.CallTo(() => timeWorkerFactory.CreateTimerWorker())
+		.Returns(timerWorker);
 	}
 
 	private void SetUpWorker()
@@ -82,19 +96,5 @@ public abstract class WorkerRunnerTests
 
 		A.CallTo(() => worker.WaitOnWorkBeforeDelay())
 		.Returns(true);
-	}
-
-	protected void SetUpFakeTimers()
-	{
-		timers = new List<ITimerWorkerItem>();
-
-		for (var i = 0; i < 3; i++)
-		{
-			var timer = A.Fake<ITimerWorkerItem>();
-
-			timers.Add(timer);
-
-			workerRunner.Timers.Add(timer);
-		}
 	}
 }

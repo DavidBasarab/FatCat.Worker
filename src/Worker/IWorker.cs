@@ -1,16 +1,26 @@
 ﻿namespace FatCat.Worker;
 
-public interface IWorkerItem
+public interface IWorker
 {
 	TimeSpan Interval { get; }
 
 	Task DoWork();
 
-	int NumberOfTimesToRun() => -1;
-
 	bool WaitOnWorkBeforeDelay() => true;
 }
 
-public interface IWorker : IWorkerItem { }
+public interface IDynamicWorker : IWorker { }
 
-public interface IDynamicWorker : IWorkerItem { }
+public interface IDynamicRunAtSpecificTimeWorker : IDynamicWorker, IRunAtSpecificTimeWorker { }
+
+public interface IDynamicLimitedNumberWorker : IDynamicWorker, IRunLimitedNumberWorker { }
+
+public interface IRunLimitedNumberWorker : IWorker
+{
+	int NumberOfTimesToRun { get; }
+}
+
+public interface IRunAtSpecificTimeWorker : IWorker
+{
+	DateTime TimeToRun { get; }
+}

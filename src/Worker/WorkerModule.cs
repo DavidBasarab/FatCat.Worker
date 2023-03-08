@@ -17,11 +17,11 @@ public class WorkerModule : Module
 			.SingleInstance();
 
 		builder
-			.RegisterType<TimerWorkerItemFactory>()
-			.As<ITimerWorkerItemFactory>()
+			.RegisterType<TimerWorkerFactory>()
+			.As<ITimerWorkerFactory>()
 			.SingleInstance();
 
-		builder.RegisterType<TimerWorkerItem>()
-				.As<ITimerWorkerItem>();
+		builder.RegisterType<TimerWorker>()
+				.As<ITimerWorker>();
 	}
 }

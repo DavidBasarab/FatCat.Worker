@@ -3,14 +3,14 @@ using Xunit;
 
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
-public class StopTests : TimerWorkerItemTests
+public class StopTests : TimerWorkerTests
 {
-	public StopTests() { timerWorkerItem.Start(workerItem); }
+	public StopTests() { timerWorker.Start(worker); }
 
 	[Fact]
 	public void CallDisposeOnTimer()
 	{
-		timerWorkerItem.Stop();
+		timerWorker.Stop();
 
 		A.CallTo(() => timerWrapper.Dispose())
 		.MustHaveHappened();

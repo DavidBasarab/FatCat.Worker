@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using FatCat.Toolkit;
 using FatCat.Toolkit.Console;
+using FatCat.Toolkit.Extensions;
 using FatCat.Toolkit.Injection;
 
 namespace FatCat.Worker;
@@ -22,14 +23,14 @@ public class WorkerRunner : IWorkerRunner
 	private readonly ISystemScope systemScope;
 
 	private bool started;
-	private ITimerWorkerItemFactory timerWorkerItemFactory;
+	private ITimerWorkerFactory timerWorkerFactory;
 
-	internal ConcurrentBag<ITimerWorkerItem> Timers { get; } = new();
+	internal ConcurrentBag<ITimerWorker> Timers { get; } = new();
 
-	internal ITimerWorkerItemFactory TimerWorkerItemFactory
+	internal ITimerWorkerFactory TimerWorkerFactory
 	{
-		get => timerWorkerItemFactory ??= systemScope.Resolve<ITimerWorkerItemFactory>();
-		set => timerWorkerItemFactory = value;
+		get => timerWorkerFactory ??= systemScope.Resolve<ITimerWorkerFactory>();
+		set => timerWorkerFactory = value;
 	}
 
 	public WorkerRunner(IReflectionTools reflectionTools,
@@ -61,7 +62,7 @@ public class WorkerRunner : IWorkerRunner
 
 		foreach (var workerType in foundWorkerTypes)
 		{
-			if (workerType == typeof(IDynamicWorker)) continue;
+			if (SkipType(workerType)) continue;
 
 			StartWorker(workerType);
 		}
@@ -76,9 +77,16 @@ public class WorkerRunner : IWorkerRunner
 		foreach (var timer in Timers) timer.Dispose();
 	}
 
-	private void StartTimeForWorkerInstance(IWorkerItem worker)
+	private static bool SkipType(Type workerType)
 	{
-		var timer = TimerWorkerItemFactory.CreateTimerWorkerItem();
+		if (workerType.Implements(typeof(IDynamicWorker)) || workerType.Implements(typeof(IRunAtSpecificTimeWorker)) || workerType.Implements(typeof(IRunLimitedNumberWorker))) return true;
+
+		return workerType == typeof(IDynamicWorker) || workerType == typeof(IRunAtSpecificTimeWorker) || workerType == typeof(IRunLimitedNumberWorker);
+	}
+
+	private void StartTimeForWorkerInstance(IWorker worker)
+	{
+		var timer = TimerWorkerFactory.CreateTimerWorker();
 
 		timer.Start(worker);
 
@@ -89,7 +97,7 @@ public class WorkerRunner : IWorkerRunner
 	{
 		ConsoleLog.WriteDarkYellow($"   Worker Type <{workerType.FullName}>");
 
-		var worker = systemScope.Resolve(workerType) as IWorkerItem;
+		var worker = systemScope.Resolve(workerType) as IWorker;
 
 		StartTimeForWorkerInstance(worker);
 	}

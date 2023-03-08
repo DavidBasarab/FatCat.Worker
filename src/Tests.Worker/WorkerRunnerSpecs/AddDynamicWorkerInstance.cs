@@ -19,7 +19,7 @@ public class AddDynamicWorkerInstance : WorkerRunnerTests
 
 		workerRunner.Timers
 					.Should()
-					.Contain(timerWorkerItem);
+					.Contain(timerWorker);
 	}
 
 	[Fact]
@@ -27,7 +27,7 @@ public class AddDynamicWorkerInstance : WorkerRunnerTests
 	{
 		workerRunner.AddDynamicWorker(workerInstance);
 
-		A.CallTo(() => timeWorkerItemFactory.CreateTimerWorkerItem())
+		A.CallTo(() => timeWorkerFactory.CreateTimerWorker())
 		.MustHaveHappened();
 	}
 
@@ -36,7 +36,7 @@ public class AddDynamicWorkerInstance : WorkerRunnerTests
 	{
 		workerRunner.AddDynamicWorker(workerInstance);
 
-		A.CallTo(() => timerWorkerItem.Start(workerInstance))
+		A.CallTo(() => timerWorker.Start(workerInstance))
 		.MustHaveHappened();
 	}
 

@@ -5,22 +5,22 @@ using Humanizer;
 
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
-public abstract class TimerWorkerItemTests
+public abstract class TimerWorkerTests
 {
-	protected readonly TimerWorkerItem timerWorkerItem;
+	protected readonly TimerWorker timerWorker;
 	protected TimeSpan interval;
 	protected int numberOfTimesToRun;
 	protected ITimerWrapper timerWrapper;
 	protected ITimerWrapperFactory timerWrapperFactory;
 	protected bool waitForDelay;
-	protected IWorkerItem workerItem;
+	protected IWorker worker;
 
-	protected TimerWorkerItemTests()
+	protected TimerWorkerTests()
 	{
 		SetUpTimerWrapperFactory();
 		SetUpWorkerItem();
 
-		timerWorkerItem = new TimerWorkerItem(timerWrapperFactory);
+		timerWorker = new TimerWorker(timerWrapperFactory);
 	}
 
 	private void SetUpTimerWrapperFactory()
@@ -35,19 +35,16 @@ public abstract class TimerWorkerItemTests
 
 	private void SetUpWorkerItem()
 	{
-		workerItem = A.Fake<IWorkerItem>();
+		worker = A.Fake<IWorker>();
 
 		interval = 45.Seconds();
 		numberOfTimesToRun = -1;
 		waitForDelay = true;
 
-		A.CallTo(() => workerItem.Interval)
+		A.CallTo(() => worker.Interval)
 		.ReturnsLazily(() => interval);
 
-		A.CallTo(() => workerItem.WaitOnWorkBeforeDelay())
+		A.CallTo(() => worker.WaitOnWorkBeforeDelay())
 		.ReturnsLazily(() => waitForDelay);
-
-		A.CallTo(() => workerItem.NumberOfTimesToRun())
-		.ReturnsLazily(() => numberOfTimesToRun);
 	}
 }
