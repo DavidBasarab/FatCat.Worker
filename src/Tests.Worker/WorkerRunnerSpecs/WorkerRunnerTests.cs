@@ -2,6 +2,7 @@ using System.Reflection;
 using FakeItEasy;
 using FatCat.Toolkit;
 using FatCat.Toolkit.Injection;
+using FatCat.Toolkit.Logging;
 using FatCat.Worker;
 
 namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
@@ -25,7 +26,9 @@ public abstract class WorkerRunnerTests
 		SetUpTimeWrapperFactory();
 		SetUpSystemScope();
 
-		workerRunner = new WorkerRunner(reflectionTools, systemScope) { TimerWorkerFactory = timeWorkerFactory };
+		workerRunner = new WorkerRunner(reflectionTools,
+										systemScope,
+										A.Fake<IToolkitLogger>()) { TimerWorkerFactory = timeWorkerFactory };
 	}
 
 	protected void SetUpFakeTimers()

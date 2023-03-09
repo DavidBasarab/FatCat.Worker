@@ -4,13 +4,13 @@ using Humanizer;
 
 namespace OneOff;
 
-public class WorkToRunAGivenDateTIme : IRunAtSpecificTimeWorker
+public class WorkToRunAGivenDateTime : IRunAtSpecificTimeWorker
 {
 	public TimeSpan Interval => 1.Seconds();
 
 	public DateTime TimeToRun { get; }
 
-	public WorkToRunAGivenDateTIme() => TimeToRun = DateTime.Now.AddSeconds(5);
+	public WorkToRunAGivenDateTime() => TimeToRun = DateTime.Now.AddSeconds(5);
 
 	public Task DoWork()
 	{

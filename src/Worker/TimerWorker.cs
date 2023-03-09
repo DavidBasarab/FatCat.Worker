@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using FatCat.Toolkit.Logging;
 using FatCat.Worker.Wrappers;
 
 namespace FatCat.Worker;
@@ -13,6 +14,7 @@ public interface ITimerWorker : IDisposable
 [ExcludeFromCodeCoverage(Justification = "This is a wrapper for the timer thread thus it is not testable")]
 public class TimerWorker : ITimerWorker
 {
+	private readonly IToolkitLogger logger;
 	private readonly ITimerWrapperFactory timerWrapperFactory;
 
 	private int runs;
@@ -33,7 +35,12 @@ public class TimerWorker : ITimerWorker
 
 	private bool UnderTimesToRun => runs < NumberOfTimesToRun;
 
-	public TimerWorker(ITimerWrapperFactory timerWrapperFactory) => this.timerWrapperFactory = timerWrapperFactory;
+	public TimerWorker(ITimerWrapperFactory timerWrapperFactory,
+						IToolkitLogger logger)
+	{
+		this.timerWrapperFactory = timerWrapperFactory;
+		this.logger = logger;
+	}
 
 	public void Dispose() => timer?.Dispose();
 
@@ -50,15 +57,12 @@ public class TimerWorker : ITimerWorker
 		if (RunAtSpecificTime())
 		{
 			timer.AutoReset = false;
-		
+
 			var timeWorkItem = worker as IRunAtSpecificTimeWorker;
-		
+
 			timer.Interval = timeWorkItem.TimeToRun - DateTime.Now;
 		}
-		else
-		{
-			timer.Interval = worker.Interval;
-		}
+		else timer.Interval = worker.Interval;
 
 		timer.OnTimerElapsed = TimerElapsed;
 
@@ -73,7 +77,14 @@ public class TimerWorker : ITimerWorker
 	{
 		runs++;
 
-		worker.DoWork().Wait();
+		logger.Debug($"Doing work on <{worker.GetType().FullName}>");
+
+		try { worker.DoWork().Wait(); }
+		catch (Exception e)
+		{
+			logger.Error($"Error running worker <{worker.GetType().FullName}>");
+			logger.Exception(e);
+		}
 
 		if (RunAtSpecificTime()) return;
 

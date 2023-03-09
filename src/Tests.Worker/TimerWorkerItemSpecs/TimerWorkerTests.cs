@@ -1,4 +1,5 @@
 using FakeItEasy;
+using FatCat.Toolkit.Logging;
 using FatCat.Worker;
 using FatCat.Worker.Wrappers;
 using Humanizer;
@@ -20,7 +21,8 @@ public abstract class TimerWorkerTests
 		SetUpTimerWrapperFactory();
 		SetUpWorkerItem();
 
-		timerWorker = new TimerWorker(timerWrapperFactory);
+		timerWorker = new TimerWorker(timerWrapperFactory,
+									A.Fake<IToolkitLogger>());
 	}
 
 	private void SetUpTimerWrapperFactory()
