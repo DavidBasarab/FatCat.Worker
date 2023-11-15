@@ -8,7 +8,7 @@
       <AssemblyName>FatCat.Worker</AssemblyName>
       <DebugType>full</DebugType>
       <LangVersion>latest</LangVersion>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
       <Authors>David Basarab</Authors>
       <PackageTags>tools</PackageTags>
       <PackageProjectUrl>https://github.com/DavidBasarab/FatCat.Worker</PackageProjectUrl>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FatCat.Toolkit" Version="1.0.171" />
+    <PackageReference Include="FatCat.Toolkit" Version="1.0.173" />
   </ItemGroup>
 
 </Project>
