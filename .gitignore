@@ -349,3 +349,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 **/.idea/**
+
+# Standards-review reports — generated locally by the /standards-review skill, never committed
+.reviews/
+
+# Claude Code machine-local settings
+.claude/settings.local.json
