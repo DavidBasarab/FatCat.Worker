@@ -1,7 +1,4 @@
-using FakeItEasy;
 using FatCat.Worker;
-using FluentAssertions;
-using Xunit;
 
 namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
 
@@ -55,7 +52,7 @@ public class AddDynamicWorkerClosedOver : WorkerRunnerTests
 	{
 		workerRunner.AddDynamicWorker<TestDynWorker>();
 
-		workerRunner.Timers
+		workerRunner.Timers.ToList()
 					.Should()
 					.Contain(timerWorker);
 	}

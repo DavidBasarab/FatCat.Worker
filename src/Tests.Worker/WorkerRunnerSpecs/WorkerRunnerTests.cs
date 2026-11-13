@@ -1,5 +1,4 @@
 using System.Reflection;
-using FakeItEasy;
 using FatCat.Toolkit;
 using FatCat.Toolkit.Injection;
 using FatCat.Toolkit.Logging;

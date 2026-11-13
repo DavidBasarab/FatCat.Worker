@@ -1,7 +1,3 @@
-using FakeItEasy;
-using FluentAssertions;
-using Xunit;
-
 namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
 
 public class StopTests : WorkerRunnerTests
@@ -13,7 +9,7 @@ public class StopTests : WorkerRunnerTests
 	{
 		workerRunner.Stop();
 
-		workerRunner.Timers
+		workerRunner.Timers.ToList()
 					.Should()
 					.BeEmpty();
 	}

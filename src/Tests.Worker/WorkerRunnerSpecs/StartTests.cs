@@ -1,7 +1,4 @@
-using FakeItEasy;
 using FatCat.Worker;
-using FluentAssertions;
-using Xunit;
 
 namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
 
@@ -77,7 +74,7 @@ public class StartTests : WorkerRunnerTests
 	{
 		workerRunner.Start();
 
-		workerRunner.Timers
+		workerRunner.Timers.ToList()
 					.Should()
 					.HaveCount(workerTypes.Count);
 	}

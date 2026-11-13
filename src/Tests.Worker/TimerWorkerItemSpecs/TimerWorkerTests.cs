@@ -1,4 +1,3 @@
-using FakeItEasy;
 using FatCat.Toolkit.Logging;
 using FatCat.Worker;
 using FatCat.Worker.Wrappers;
