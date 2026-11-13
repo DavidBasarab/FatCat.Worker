@@ -1,7 +1,3 @@
-using FakeItEasy;
-using FluentAssertions;
-using Xunit;
-
 namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
 
 public class DisposeTests : WorkerRunnerTests
@@ -13,7 +9,7 @@ public class DisposeTests : WorkerRunnerTests
 	{
 		workerRunner.Dispose();
 
-		workerRunner.Timers
+		workerRunner.Timers.ToList()
 					.Should()
 					.BeEmpty();
 	}

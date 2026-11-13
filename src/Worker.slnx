@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="OneOff/OneOff.csproj" />
+  <Project Path="Tests.Worker/Tests.Worker.csproj" />
+  <Project Path="Worker/Worker.csproj" />
+</Solution>

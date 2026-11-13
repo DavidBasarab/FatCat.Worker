@@ -1,6 +1,3 @@
-using FakeItEasy;
-using Xunit;
-
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
 public class StopTests : TimerWorkerTests

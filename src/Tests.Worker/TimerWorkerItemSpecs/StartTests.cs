@@ -1,7 +1,3 @@
-using FakeItEasy;
-using FluentAssertions;
-using Xunit;
-
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 
 public class StartTests : TimerWorkerTests
@@ -51,8 +47,8 @@ public class StartTests : TimerWorkerTests
 		timerWorker.Start(worker);
 
 		timerWrapper.OnTimerElapsed
-					.Should()
-					.NotBeNull();
+					.Should<object>()
+					.Not.BeNull();
 	}
 
 	[Fact]

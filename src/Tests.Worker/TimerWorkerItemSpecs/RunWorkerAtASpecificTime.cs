@@ -1,8 +1,5 @@
-using FakeItEasy;
 using FatCat.Worker;
-using FluentAssertions;
 using Humanizer;
-using Xunit;
 
 namespace Tests.FatCat.Worker.TimerWorkerItemSpecs;
 

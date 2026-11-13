@@ -1,8 +1,5 @@
-using FakeItEasy;
 using FatCat.Worker;
-using FluentAssertions;
 using Humanizer;
-using Xunit;
 
 namespace Tests.FatCat.Worker.WorkerRunnerSpecs;
 
@@ -17,7 +14,7 @@ public class AddDynamicWorkerInstance : WorkerRunnerTests
 	{
 		workerRunner.AddDynamicWorker(workerInstance);
 
-		workerRunner.Timers
+		workerRunner.Timers.ToList()
 					.Should()
 					.Contain(timerWorker);
 	}
