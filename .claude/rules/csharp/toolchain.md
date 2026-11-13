@@ -1,12 +1,12 @@
 # Toolchain
 
-## Solution — src/Worker.sln
-The solution is `src/Worker.sln` (under `src/`, not the repo root). Every project belongs to it. When you add a project, add it with `dotnet sln src/Worker.sln add <path>` — never hand-edit the solution file.
+## Solution — src/Worker.slnx
+The solution is `src/Worker.slnx` (under `src/`, not the repo root). Every project belongs to it. When you add a project, add it with `dotnet sln src/Worker.slnx add <path>` — never hand-edit the solution file.
 
 Build and test the whole repo against the solution:
 ```bash
-dotnet build src/Worker.sln
-dotnet test src/Worker.sln
+dotnet build src/Worker.slnx
+dotnet test src/Worker.slnx
 ```
 
 ## CSharpier — Final Formatting Authority
@@ -27,9 +27,9 @@ CSharpier owns **all** C# layout — braces, spacing, new lines, wrapping, singl
 
 Run it before committing — style and analyzers only, never `whitespace`:
 ```bash
-dotnet format style src/Worker.sln                       # apply code-style fixes from .editorconfig
-dotnet format analyzers src/Worker.sln                   # apply analyzer fixes
-dotnet format style src/Worker.sln --verify-no-changes   # CI / pre-commit gate
+dotnet format style src/Worker.slnx                       # apply code-style fixes from .editorconfig
+dotnet format analyzers src/Worker.slnx                   # apply analyzer fixes
+dotnet format style src/Worker.slnx --verify-no-changes   # CI / pre-commit gate
 ```
 
 If `dotnet format` changes something, that change is correct — do not revert it. Do not suppress an analyzer rule without a comment explaining why. Suppression format when genuinely necessary:

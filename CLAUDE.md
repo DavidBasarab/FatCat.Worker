@@ -11,7 +11,7 @@ It is the single source of truth for what this product is and how it is built. D
 
 The README tells you the things you must know before you touch a line of code:
 - **Product:** FatCat.Worker — a lightweight NuGet library (`FatCat.Worker`) for running recurring worker tasks in .NET. A consumer implements `IWorker` (an `Interval` plus `DoWork()`); `WorkerRunner` discovers every `IWorker` in the loaded assemblies by reflection, resolves it from the FatCat `SystemScope` (Autofac) container, and runs it on a timer. Variants run a worker at a specific time (`IRunAtSpecificTimeWorker`), a limited number of times (`IRunLimitedNumberWorker`), or only when added at runtime (`IDynamicWorker` via `AddDynamicWorker`).
-- **Tech stack:** **.NET 8 / C#** (`LangVersion` latest) class library built on the **FatCat.Toolkit** (injection, reflection, logging). Tests use **xUnit**, **FakeItEasy**, and **FluentAssertions**. There is no UI, web server, or database in this repo.
+- **Tech stack:** **.NET 11 / C#** (`LangVersion` latest) class library built on the **FatCat.Toolkit** (injection, reflection, logging). Tests use **xUnit**, **FakeItEasy**, and **FluentAssertions**. There is no UI, web server, or database in this repo.
 - **Architecture:** `Worker` is the shipped library; `Tests.Worker` holds its unit tests; `OneOff` is a scratch console app for trying workers by hand and is not shipped.
 - **Standing rules:** this is a published package — changes to a public interface (`IWorker`, `IWorkerRunner`, and their variants) are breaking changes for consumers, and the version is stepped in `VersionPrefix` in `Worker.csproj`.
 
@@ -29,8 +29,8 @@ All production namespaces start with `FatCat.Worker.*`; test namespaces start wi
 
 Everything must build and every test must pass before work is considered done:
 ```bash
-dotnet build src/Worker.sln
-dotnet test src/Worker.sln
+dotnet build src/Worker.slnx
+dotnet test src/Worker.slnx
 ```
 
 ---
